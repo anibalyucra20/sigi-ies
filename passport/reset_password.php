@@ -23,14 +23,14 @@ $b_datos_institucion = buscarDatosInstitucional($conexion);
     <!-- Bootstrap -->
     <link href="../plantilla/Gentella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../plantila/Gentella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../plantilla/Gentella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="../plantila/Gentella/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../plantilla/Gentella/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- Animate.css -->
-    <link href="../plantila/Gentella/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <link href="../plantilla/Gentella/vendors/animate.css/animate.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="../plantila/Gentella/build/css/custom.min.css" rel="stylesheet">
+    <link href="../plantilla/Gentella/build/css/custom.min.css" rel="stylesheet">
   </head>
 
   <body class="login">

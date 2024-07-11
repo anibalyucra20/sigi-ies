@@ -4,6 +4,7 @@ include '../include/busquedas.php';
 include '../include/funciones.php';
 
 session_start();
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -12,7 +13,7 @@ require '../librerias/PHPMailer/Exception.php';
 require '../librerias/PHPMailer/PHPMailer.php';
 require '../librerias/PHPMailer/SMTP.php';
 
-if (!isset($_POST['email'])&&!isset($_POST['dni'])) {
+if (!isset($_POST['email']) && !isset($_POST['dni'])) {
 
     if (isset($_SESSION['sigi_id_sesion'])) {
         $id_sesion = $_SESSION['sigi_id_sesion'];
@@ -26,9 +27,9 @@ if (!isset($_POST['email'])&&!isset($_POST['dni'])) {
         $id_sesion = $_SESSION['admision_id_sesion'];
         $token = $_SESSION['admision_token'];
     }
-    
-    
-    
+
+
+
     $b_sesion = buscarSesionLoginById($conexion, $id_sesion);
     $r_b_sesion = mysqli_fetch_array($b_sesion);
     if (password_verify($r_b_sesion['token'], $token)) {
@@ -37,7 +38,6 @@ if (!isset($_POST['email'])&&!isset($_POST['dni'])) {
     } else {
         $enviar = 0;
     }
-    
 } else {
     $correo = $_POST['email'];
     $dni = $_POST['dni'];
@@ -58,7 +58,7 @@ $llave = generar_llave();
 $token = password_hash($llave, PASSWORD_DEFAULT);
 
 if ($enviar) {
-    
+
 
     $b_datos_institucion = buscarDatosInstitucional($conexion);
     $r_b_datos_institucion = mysqli_fetch_array($b_datos_institucion);
@@ -72,7 +72,7 @@ if ($enviar) {
     //enviamos correo
 
 
-    $asunto = "Cambio de Contraseña SIGI - ".$r_b_datos_institucion['nombre_institucion'];
+    $asunto = "Cambio de Contraseña SIGI - " . $r_b_datos_institucion['nombre_institucion'];
     //Create an instance; passing `true` enables exceptions
     $mail = new PHPMailer(true);
 
@@ -87,7 +87,7 @@ if ($enviar) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
         $mail->Port       = $r_b_datos_sistema['puerto_email'];                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
-        $titulo_correo = 'MENSAJERÍA SIGI - '.$r_b_datos_sistema['nombre_completo'];
+        $titulo_correo = 'MENSAJERÍA SIGI - ' . $r_b_datos_sistema['nombre_completo'];
         //Recipients
         $mail->setFrom($r_b_datos_sistema['email_email'], $titulo_correo);
         $mail->addAddress($r_b_usuario['correo'], $r_b_usuario['apellidos_nombres']);     //Add a recipient
@@ -106,7 +106,7 @@ if ($enviar) {
         $mail->Subject = $asunto;
 
 
-        $link = 'https://'.$r_b_datos_sistema['dominio_pagina'].'/passport/recuperar_password?data=' . $id_usuario . '&token='.$token;
+        $link = 'https://' . $r_b_datos_sistema['dominio_pagina'] . '/passport/recuperar_password?data=' . $id_usuario . '&token=' . $token;
         $mail->Body = '<!DOCTYPE html>
                     <html lang="es">
                     <head>
@@ -114,18 +114,18 @@ if ($enviar) {
                     </head>
                     <body>
                     <div style="width: 100%; font-family: Roboto; font-size: 0.8em; display: inline;">
-                        <div style="background-color:'.$r_b_datos_sistema['color_correo'].'; border-radius: 10px 10px 0px 0px; text-align: center;">
-                            <img src="https://'.$r_b_datos_sistema['dominio_pagina'].'/images/logo.png" alt="'.$r_b_datos_sistema['dominio_pagina'].'" style="padding: 0.5em; text-align: center;" height="50px">
+                        <div style="background-color:' . $r_b_datos_sistema['color_correo'] . '; border-radius: 10px 10px 0px 0px; text-align: center;">
+                            <img src="https://' . $r_b_datos_sistema['dominio_pagina'] . '/images/logo.png" alt="' . $r_b_datos_sistema['dominio_pagina'] . '" style="padding: 0.5em; text-align: center;" height="50px">
                         </div>
-                        <div style="background-color:'.$r_b_datos_sistema['color_correo'].'; border-radius: 0px 0px 0px 0px; height: 60px; margin-top: 0px; padding-top: 2px; padding-bottom: 10px;">
-                            <p style="text-align: center; font-size: 1.0rem; color: #f1f1f1; text-shadow: 2px 2px 2px #cfcfcf; ">'.$r_b_datos_institucion['nombre_institucion'].'</p>
+                        <div style="background-color:' . $r_b_datos_sistema['color_correo'] . '; border-radius: 0px 0px 0px 0px; height: 60px; margin-top: 0px; padding-top: 2px; padding-bottom: 10px;">
+                            <p style="text-align: center; font-size: 1.0rem; color: #f1f1f1; text-shadow: 2px 2px 2px #cfcfcf; ">' . $r_b_datos_institucion['nombre_institucion'] . '</p>
                         </div>
                         <div>
                             <h2 style="text-align:center;">SIGI (Sistema Integrado de Gestión Institucional)</h2>
                             <h3 style="text-align:center; color: #3c4858;">CAMBIO DE CONTRASEÑA</h3>
                             <p style="font-size:1.0rem; color: #2A2C2B; margin-top: 2em; margin-bottom: 2em; margin-left: 1.5em;">
                     
-                                Hola ' . $r_b_usuario['apellidos_nombres'] . ', para poder recuperar tu contraseña, Haz click <a href="'.$link.'">Aquí</a>.<br>
+                                Hola ' . $r_b_usuario['apellidos_nombres'] . ', para poder recuperar tu contraseña, Haz click <a href="' . $link . '">Aquí</a>.<br>
                                 
                                 
                                 <br>
@@ -135,14 +135,14 @@ if ($enviar) {
                     
                             </p>
                         </div>
-                        <div style="color: #f1f1f1; width: 100%; height: 120px; background:'.$r_b_datos_sistema['color_correo'].'; text-align: center;  border-radius: 0px 0px 10px 10px; ">
+                        <div style="color: #f1f1f1; width: 100%; height: 120px; background:' . $r_b_datos_sistema['color_correo'] . '; text-align: center;  border-radius: 0px 0px 10px 10px; ">
                             <br>
                             <p style="margin: 0px;">
                                 <strong>
                                     <a"
-                                       style="text-decoration: none; color: #f1f1f1; ">'.$r_b_datos_institucion['direccion'].'
-                                        &nbsp;|&nbsp; Teléfono: '.$r_b_datos_institucion['telefono'].'</a>
-                                    <br> '.$r_b_datos_institucion['nombre_institucion'].'
+                                       style="text-decoration: none; color: #f1f1f1; ">' . $r_b_datos_institucion['direccion'] . '
+                                        &nbsp;|&nbsp; Teléfono: ' . $r_b_datos_institucion['telefono'] . '</a>
+                                    <br> ' . $r_b_datos_institucion['nombre_institucion'] . '
                                 </strong>
                             </p>
                         </div>
@@ -163,7 +163,7 @@ if ($enviar) {
     } catch (Exception $e) {
         echo "Error correo: {$mail->ErrorInfo}";
     }
-}else{
+} else {
     echo "<script>
     alert('Ops, Ocurrio un Error al enviar Correo');
     window.history.back();

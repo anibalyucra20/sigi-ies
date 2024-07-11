@@ -11,6 +11,11 @@ function buscarUsuarioByDni($conexion, $dni)
 	$sql = "SELECT * FROM sigi_usuarios WHERE dni='$dni'";
 	return mysqli_query($conexion, $sql);
 }
+function buscarUsuarioByDniCorreo($conexion, $dni, $correo)
+{
+	$sql = "SELECT * FROM sigi_usuarios WHERE dni='$dni' AND correo='$correo'";
+	return mysqli_query($conexion, $sql);
+}
 function buscarUsuarioDirector_All($conexion)
 {
 	$sql = "SELECT * FROM sigi_usuarios WHERE id_rol=1";

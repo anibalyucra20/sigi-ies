@@ -103,8 +103,10 @@ if (!verificar_sesion($conexion)) {
                     </thead>
                     <tbody>
                       <?php
+                      $cont =0;
                       $buscar_mf = buscarModulosFormativos($conexion);
                       while ($res_busc_mf = mysqli_fetch_array($buscar_mf)) {
+                        $cont++;
                         //buscar programa de estudio por id
                         $id_prog_e = $res_busc_mf['id_programa_estudio'];
                         $buscar_pe = buscarProgramaEstudioById($conexion, $id_prog_e);
@@ -113,7 +115,7 @@ if (!verificar_sesion($conexion)) {
                         
                       ?>
                         <tr>
-                          <td><?php echo $res_busc_mf['id']; ?></td>
+                          <td><?php echo $cont; ?></td>
                           <td><?php echo $res_busc_pe['nombre']; ?></td>
                           <td><?php echo $res_busc_mf['nro_modulo']; ?></td>
                           <td><?php echo $res_busc_mf['descripcion']; ?></td>

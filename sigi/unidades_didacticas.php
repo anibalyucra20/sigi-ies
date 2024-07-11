@@ -110,13 +110,14 @@ if (!verificar_sesion($conexion)) {
                         </thead>
                         <tbody>
                           <?php
+                          $cont =0;
                           $ejec_busc_ud = buscarUnidadDidactica($conexion);
                           while ($res_busc_ud = mysqli_fetch_array($ejec_busc_ud)) {
-
+                            $cont++;
                             $data = base64_encode($res_busc_ud['id']);
                           ?>
                             <tr>
-                              <td><?php echo $res_busc_ud['id']; ?></td>
+                              <td><?php echo $cont; ?></td>
                               <td><?php echo $res_busc_ud['nombre']; ?></td>
                               <?php
                               $id_semestre = $res_busc_ud['id_semestre'];

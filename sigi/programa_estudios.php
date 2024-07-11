@@ -105,11 +105,13 @@ if (!verificar_sesion($conexion)) {
                                                 </thead>
                                                 <tbody>
                                                     <?php
+                                                    $cont =0;
                                                     $busc_carrera = buscarProgramaEstudio($conexion);
                                                     while ($res_busc_carrera = mysqli_fetch_array($busc_carrera)) {
+                                                        $cont++;
                                                     ?>
                                                         <tr>
-                                                            <td><?php echo $res_busc_carrera['id']; ?></td>
+                                                            <td><?php echo $cont; ?></td>
                                                             <td><?php echo $res_busc_carrera['codigo']; ?></td>
                                                             <td><?php echo $res_busc_carrera['tipo']; ?></td>
                                                             <td><?php echo $res_busc_carrera['plan_estudios']; ?></td>

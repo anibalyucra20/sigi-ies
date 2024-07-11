@@ -103,7 +103,7 @@ if (!verificar_sesion($conexion)) {
                                                 </thead>
                                                 <tbody>
                                                     <?php
-                                                    $cont==0;
+                                                    $cont=0;
                                                     $busc_carrera = buscarProgramaEstudio($conexion);
                                                     while ($res_busc_carrera = mysqli_fetch_array($busc_carrera)) {
 

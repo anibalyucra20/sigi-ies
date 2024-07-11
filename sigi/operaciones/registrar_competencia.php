@@ -43,10 +43,11 @@ if (!verificar_sesion($conexion)) {
         $insertar = "INSERT INTO sigi_competencias (id_modulo_formativo, tipo, codigo, descripcion) VALUES ('$modulo','$tipo','$codigo','$descripcion')";
         $ejecutar_insetar = mysqli_query($conexion, $insertar);
         if ($ejecutar_insetar) {
+
+            $id_competencia = base64_encode(mysqli_insert_id($conexion));
             echo "<script>
                 alert('Registro Existoso');
-                window.location= '../competencias'
-    			</script>";
+                window.location= '../indicador_logro_competencia?id=".$id_competencia."'</script>";
         } else {
             echo "<script>
 			alert('Error al registrar Competencia');

@@ -59,7 +59,6 @@
                     </li>
                 </ul>
             </div>
-
         </div>
     </div>
 </div>
@@ -79,7 +78,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                         <li>
-                            <a href=""> Cambiar mi contraseña</a>
+                            <a href="../passport/enviar_correo"> Cambiar mi contraseña</a>
                         </li>
                         <li><a href="../include/cerrar_sesion_acad"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a></li>
                     </ul>

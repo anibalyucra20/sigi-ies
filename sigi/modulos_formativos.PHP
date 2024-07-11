@@ -110,6 +110,7 @@ if (!verificar_sesion($conexion)) {
                         $buscar_pe = buscarProgramaEstudioById($conexion, $id_prog_e);
                         $res_busc_pe = mysqli_fetch_array($buscar_pe);
 
+                        
                       ?>
                         <tr>
                           <td><?php echo $res_busc_mf['id']; ?></td>

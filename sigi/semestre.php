@@ -95,9 +95,9 @@ if (!verificar_sesion($conexion)) {
                                                 <thead>
                                                     <tr>
                                                         <th>Identificador</th>
-                                                        <th>Semestre</th>
-                                                        <th>Módulo Formativo</th>
                                                         <th>Programa de Estudio</th>
+                                                        <th>Módulo Formativo</th>
+                                                        <th>Semestre</th>
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -119,9 +119,9 @@ if (!verificar_sesion($conexion)) {
                                                     ?>
                                                                 <tr>
                                                                     <td><?php echo $cont; ?></td>
-                                                                    <td><?php echo $res_busc_sem['descripcion']; ?></td>
-                                                                    <td><?php echo "M".$res_busc_mf['nro_modulo']; ?></td>
                                                                     <td><?php echo $res_busc_carrera['nombre']; ?></td>
+                                                                    <td><?php echo "M".$res_busc_mf['nro_modulo']; ?></td>
+                                                                    <td><?php echo $res_busc_sem['descripcion']; ?></td>
                                                                     <td>
                                                                     <a class="btn btn-success" href="editar_semestre?data=<?php echo $data; ?>"><i class="fa fa-pencil-square-o"></i> Editar</a>
                                                                     </td>

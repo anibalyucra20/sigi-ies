@@ -97,10 +97,10 @@ if (!verificar_sesion($conexion)) {
                         <thead>
                           <tr>
                             <th>Identificador</th>
-                            <th>Unidad Didactica</th>
                             <th>Programa de Estudios</th>
                             <th>Módulo</th>
                             <th>Semestre</th>
+                            <th>Unidad Didactica</th>
                             <th>Créditos</th>
                             <th>Horas</th>
                             <th>Tipo</th>
@@ -118,7 +118,6 @@ if (!verificar_sesion($conexion)) {
                           ?>
                             <tr>
                               <td><?php echo $cont; ?></td>
-                              <td><?php echo $res_busc_ud['nombre']; ?></td>
                               <?php
                               $id_semestre = $res_busc_ud['id_semestre'];
                               $ejec_busc_semestre = buscarSemestreById($conexion, $id_semestre);
@@ -136,6 +135,7 @@ if (!verificar_sesion($conexion)) {
                               <td><?php echo $res_busc_carrera['nombre']; ?></td>
                               <td><?php echo "M" . $res_busc_modulo['nro_modulo']; ?></td>
                               <td><?php echo $res_busc_semestre['descripcion']; ?></td>
+                              <td><?php echo $res_busc_ud['nombre']; ?></td>
                               <td><?php echo $res_busc_ud['creditos']; ?></td>
                               <td><?php echo $res_busc_ud['horas']; ?></td>
                               <td><?php echo $res_busc_ud['tipo']; ?></td>

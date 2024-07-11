@@ -159,7 +159,11 @@ if (!verificar_sesion($conexion)) {
                                                                         <div class="form-group">
                                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipo : </label>
                                                                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                                <input type="text" class="form-control" name="tipo" value="" required="required" placeholder="Modular - Transversal">
+                                                                                <select class="form-control" name="tipo" required="required">
+                                                                                    <option value=""></option>
+                                                                                    <option value="MODULAR">MODULAR</option>
+                                                                                    <option value="TRANSVERSAL">TRANSVERSAL</option>
+                                                                                </select>
                                                                                 <br>
                                                                             </div>
                                                                         </div>

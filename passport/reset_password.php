@@ -1,3 +1,13 @@
+<?php
+include "../include/conexion.php";
+include '../include/busquedas.php';
+include '../include/funciones.php';
+
+
+$b_datos_institucion = buscarDatosInstitucional($conexion);
+  $r_b_datos_institucion = mysqli_fetch_array($b_datos_institucion);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,20 +17,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Recuperar Contraseña<?php include ("../../include/header_title.php"); ?></title>
+    <title>Recuperar Contraseña<?php include ("../include/header_title.php"); ?></title>
     <!--icono en el titulo-->
-    <link rel="shortcut icon" href="../../img/favicon.ico">
+    <link rel="shortcut icon" href="../images/favicon.ico">
     <!-- Bootstrap -->
-    <link href="../../Gentella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../plantilla/Gentella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../../Gentella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../plantila/Gentella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="../../Gentella/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../plantila/Gentella/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- Animate.css -->
-    <link href="../../Gentella/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <link href="../plantila/Gentella/vendors/animate.css/animate.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="../../Gentella/build/css/custom.min.css" rel="stylesheet">
+    <link href="../plantila/Gentella/build/css/custom.min.css" rel="stylesheet">
   </head>
 
   <body class="login">
@@ -29,7 +39,7 @@
 
       <div class="login_wrapper">
         <div id="register" class="">
-          <center><img src="../../img/logo.png" width="150px"></center>
+          <center><img src="../images/logo.png" width="150px"></center>
           <section class="login_content">
             <form role="form" action="enviar_correo.php" method="POST">
               <h1>Recuperar Acceso</h1>
@@ -49,15 +59,15 @@
               <div class="separator">
                 <p class="change_link">¿Ya tienes una Cuenta?
 
-                  <a href="../login/" class="to_register"> Iniciar Sesión </a>
+                  <a href="../passport/" class="to_register"> Iniciar Sesión </a>
                 </p>
 
                 <div class="clearfix"></div>
                 <br />
 
                 <div>
-                  <h1>I.E.S.T.P. "HUANTA"</h1>
-                  <!--<p>Bienvenido a la Biblioteca Virtual, Inicie Sesion para acceder a los materiales de lectura</p>-->
+                  <h1><?php echo $r_b_datos_institucion['nombre_institucion']; ?></h1>
+                  <p>SIGI (Sistema Integrado de Gestión Institucional)</p>
                 </div>
               </div>
             </form>

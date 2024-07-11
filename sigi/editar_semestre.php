@@ -129,7 +129,7 @@ if (!verificar_sesion($conexion)) {
                                                                 $id_mf = $res_busc_mf['id'];
                                                                 $mf = $res_busc_mf['descripcion'];
                                                             ?>
-                                                                <option value="<?php echo $id_mf; ?>" <?php if($id_modulo == $id_mf){ echo ' selected="selected"'; } ?>><?php echo $mf; ?></option>
+                                                                <option value="<?php echo $id_mf; ?>" <?php if($id_modulo == $id_mf){ echo ' selected="selected"'; } ?>><?php echo "M".$res_busc_mf['nro_modulo']." - ".$mf; ?></option>
                                                             <?php
                                                             }
                                                             ?>

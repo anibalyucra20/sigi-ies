@@ -115,7 +115,7 @@ if ($enviar) {
                     <body>
                     <div style="width: 100%; font-family: Roboto; font-size: 0.8em; display: inline;">
                         <div style="background-color:'.$r_b_datos_sistema['color_correo'].'; border-radius: 10px 10px 0px 0px; text-align: center;">
-                            <img src="'.$r_b_datos_sistema['dominio_pagina'].'/images/logo.png" alt="'.$r_b_datos_sistema['dominio_pagina'].'" style="padding: 0.5em; text-align: center;" height="50px">
+                            <img src="https://'.$r_b_datos_sistema['dominio_pagina'].'/images/logo.png" alt="'.$r_b_datos_sistema['dominio_pagina'].'" style="padding: 0.5em; text-align: center;" height="50px">
                         </div>
                         <div style="background-color:'.$r_b_datos_sistema['color_correo'].'; border-radius: 0px 0px 0px 0px; height: 60px; margin-top: 0px; padding-top: 2px; padding-bottom: 10px;">
                             <p style="text-align: center; font-size: 1.0rem; color: #f1f1f1; text-shadow: 2px 2px 2px #cfcfcf; ">'.$r_b_datos_institucion['nombre_institucion'].'</p>

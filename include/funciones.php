@@ -192,7 +192,7 @@ function realizar_programacion($conexion, $unidad_didactica, $id_ult_periodo,$pr
     $hoy = date("Y-m-d");
 
     $consulta = "INSERT INTO acad_programacion_unidad_didactica (id_unidad_didactica, id_docente, id_periodo_academico,id_programa_sede, supervisado, reg_evaluacion, reg_auxiliar, prog_curricular, otros, logros_obtenidos, dificultades, sugerencias) VALUES ('$unidad_didactica','$docente','$id_ult_periodo','$programa_sede', 0, 0, 0, 0, 0, '', '', '')";
-    mysqli_query($conexion, $consulta);
+    $ejec_reg_programacion = mysqli_query($conexion, $consulta);
     //buscamos el id de la programacion hecha
     $id_programacion = mysqli_insert_id($conexion);
 

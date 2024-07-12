@@ -47,7 +47,11 @@ if (!verificar_sesion($conexion)) {
 
             $id_ud = $_POST['unidad_didactica'];
             $id_docente = $_POST['docente'];
-            $id_pe_sede = $_POST['carrera_m'];
+            $id_pe = $_POST['carrera_m'];
+
+            $b_pe_sede = buscarProgramaEstudioSedeByIdSedePe($conexion, $id_sede_act, $id_pe);
+            $rb_pe_sede = mysqli_fetch_array($b_pe_sede);
+            $id_pe_sede = $rb_pe_sede['id'];
 
             //verificar que  docente no este programado en la unidad didactica
             $busc_programacion_existe = buscarProgramacionByUd_Peridodo_ProgramaSede($conexion, $id_ud, $id_pe_sede, $id_periodo_act);
@@ -65,7 +69,7 @@ if (!verificar_sesion($conexion)) {
                 if ($registro_programacion) {
                     echo "<script>
 			            alert('Programacion registrado correctamente');
-			            window.location= '../programacion.php'
+			            window.location= '../programacion'
 		                </script>
 		            ";
                 } else {
@@ -84,8 +88,8 @@ if (!verificar_sesion($conexion)) {
             }
         } else {
             echo "<script>
-                alert('Error, No puede Registrar Estudiantes Fuera de Periodo');
-                window.location= '../estudiantes'
+                alert('Error, No puede Registrar Programacion Fuera de Periodo');
+                window.location= '../programacion'
     			</script>";
         }
     }

@@ -318,6 +318,11 @@ function buscarDatosSistema($conexion)
 
 //PROGRAMACION DE UNIDADES DIDACTICAS
 
+function buscarProgramacionUDById($conexion, $id)
+{
+	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
 function buscarProgramacionUDByPeriodoSede($conexion, $periodo, $programasede)
 {
 	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id_periodo_academico='$periodo' AND id_programa_sede='$programasede'";

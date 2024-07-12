@@ -129,13 +129,14 @@ if (!verificar_sesion($conexion)) {
                                                     $b_pe = buscarProgramaEstudio($conexion);
                                                     while ($rb_pe = mysqli_fetch_array($b_pe)) {
                                                         $id_pe = $rb_pe['id'];
-                                                        $b_pe_sede = buscarProgramaEstudioSedeByIdSedePe($conexion, $id_sede, $id_pe);
-                                                        $rb_pe_sede = mysqli_fetch_array($id_sede_act);
+                                                        $b_pe_sede = buscarProgramaEstudioSedeByIdSedePe($conexion, $id_sede_act, $id_pe);
+                                                        $rb_pe_sede = mysqli_fetch_array($b_pe_sede);
                                                         $id_pe_sede = $rb_pe_sede['id'];
 
                                                         $cont = 0;
                                                         $ejec_busc_programacion = buscarProgramacionUDByPeriodoSede($conexion, $id_periodo_act, $id_pe_sede);
                                                         while ($res_busc_programacion = mysqli_fetch_array($ejec_busc_programacion)) {
+                                                            $data = base64_encode($res_busc_programacion['id']);
                                                             $cont += 1;
                                                     ?>
                                                             <tr>
@@ -163,13 +164,15 @@ if (!verificar_sesion($conexion)) {
 
                                                                 ?>
                                                                 <td><?php echo $res_b_semestre['descripcion']; ?></td>
-                                                                <td><?php echo $res_b_unidad_didactica['descripcion']; ?></td>
+                                                                <td><?php echo $res_b_unidad_didactica['nombre']; ?></td>
                                                                 <td><?php echo $res_b_docente['apellidos_nombres']; ?></td>
                                                                 <?php if ($agregar == 1) {
-                                                                    echo '<td><a class="btn btn-success" href="editar_programacion.php?id=' . $res_busc_programacion['id'] . '"><i class="fa fa-pencil-square-o"></i> </a></td>';
-                                                                } ?>
+                                                                ?>
+                                                                    <td><button class="btn btn-success" data-toggle="modal" data-target=".edit_<?php echo $res_busc_programacion['id']; ?> "><i class="fa fa-pencil-square-o"></i> Editar</button></td>
+                                                                <?php } ?>
                                                             </tr>
                                                     <?php
+                                                            include('include/acciones_programacion.php');
                                                         }
                                                     }
                                                     ?>
@@ -230,7 +233,7 @@ if (!verificar_sesion($conexion)) {
                                                                                                             if ($cont_pe_sede > 0) {
                                                                                                                 $carr = $res__busc_carr['nombre'];
                                                                                                         ?>
-                                                                                                                <option value="<?php echo $rb_pe_sede['id'];
+                                                                                                                <option value="<?php echo $id_carr;
                                                                                                                                 ?>"><?php echo $carr; ?></option>
                                                                                                         <?php
                                                                                                             }
@@ -318,7 +321,7 @@ if (!verificar_sesion($conexion)) {
                                                                                                     ?>
                                                                                                             <div class="checkbox">
                                                                                                                 <label>
-                                                                                                                    <input type="checkbox" class="flat" name="pe_<?php echo $id_carr; ?>"> <?php echo $carr;  ?>
+                                                                                                                    <input type="checkbox" class="flat" name="pe_<?php echo $rb_pe_sede['id']; ?>"> <?php echo $carr;  ?>
                                                                                                                 </label>
                                                                                                             </div>
                                                                                                     <?php }
@@ -423,8 +426,6 @@ if (!verificar_sesion($conexion)) {
             <!--script para obtener los modulos dependiendo de la carrera que seleccione-->
             <script type="text/javascript">
                 $(document).ready(function() {
-                    recargarlista();
-                    recargar_ud();
                     $('#carrera_m').change(function() {
                         recargarlista();
                     });

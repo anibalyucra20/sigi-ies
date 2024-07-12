@@ -332,6 +332,10 @@ function buscarProgramacionByUd_Peridodo_ProgramaSede($conexion, $unidad_didacti
 	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id_unidad_didactica='$unidad_didactica' AND id_periodo_academico='$periodo_actual' AND id_programa_sede='$programa_sede'";
 	return mysqli_query($conexion, $sql);
 }
+function buscarProgramacionByDocente_Peridodo_ProgramaSede($conexion, $docente, $programa_sede, $periodo_actual){
+	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id_docente='$docente' AND id_periodo_academico='$periodo_actual' AND id_programa_sede='$programa_sede'";
+	return mysqli_query($conexion, $sql);
+}
 
 // MATRICULAS
 

@@ -16,6 +16,11 @@ function buscarUsuarioByDniCorreo($conexion, $dni, $correo)
 	$sql = "SELECT * FROM sigi_usuarios WHERE dni='$dni' AND correo='$correo'";
 	return mysqli_query($conexion, $sql);
 }
+function buscarUsuarioCoordinador_sede($conexion, $sede)
+{
+	$sql = "SELECT * FROM sigi_usuarios WHERE id_rol=4 AND id_sede='$sede'";
+	return mysqli_query($conexion, $sql);
+}
 function buscarUsuarioDirector_All($conexion)
 {
 	$sql = "SELECT * FROM sigi_usuarios WHERE id_rol=1";
@@ -168,6 +173,10 @@ function buscarUnidadDidacticaById($conexion, $id)
 	$sql = "SELECT * FROM sigi_unidad_didactica WHERE id=$id";
 	return mysqli_query($conexion, $sql);
 }
+function buscarUdByName($conexion, $nombre){
+	$sql = "SELECT * FROM sigi_unidad_didactica WHERE nombre='$nombre'";
+	return mysqli_query($conexion, $sql);
+}
 function buscarUnidadDidacticaByIdSemestre($conexion, $id)
 {
 	$sql = "SELECT * FROM sigi_unidad_didactica WHERE id_semestre=$id";
@@ -190,6 +199,10 @@ function buscarCompetenciasByIdModuloFormativo($conexion, $id)
 	$sql = "SELECT * FROM sigi_competencias WHERE id_modulo_formativo=$id";
 	return mysqli_query($conexion, $sql);
 }
+function buscarCompetenciasEspecialidadByIdModulo($conexion, $id){
+	$sql = "SELECT * FROM sigi_competencias WHERE id_modulo_formativo='$id' AND tipo='ESPECÍFICA'";
+	return mysqli_query($conexion, $sql);
+}
 
 // indicadores de logro de competencia
 function buscarIndCompetencias($conexion)
@@ -207,6 +220,7 @@ function buscarIndCompetenciasByIdCompetencia($conexion, $id)
 	$sql = "SELECT * FROM sigi_ind_logro_competencia WHERE id_competencia=$id";
 	return mysqli_query($conexion, $sql);
 }
+
 
 //unidades capacidad
 function buscarCapacidad($conexion)
@@ -314,13 +328,18 @@ function buscarDatosSistema($conexion)
 
 
 
-// --------------------------------------------------------- SISTEMA ACADEMICO --------------------------------------------------------
+// --------------------------------------------------------- SISTEMA ACADEMICO ------------------------------------------------------
 
 //PROGRAMACION DE UNIDADES DIDACTICAS
 
 function buscarProgramacionUDById($conexion, $id)
 {
 	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarProgramacionUDByIdUd($conexion, $id)
+{
+	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id_unidad_didactica='$id'";
 	return mysqli_query($conexion, $sql);
 }
 function buscarProgramacionUDByPeriodoSede($conexion, $periodo, $programasede)
@@ -336,6 +355,67 @@ function buscarProgramacionByDocente_Peridodo_ProgramaSede($conexion, $docente, 
 	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id_docente='$docente' AND id_periodo_academico='$periodo_actual' AND id_programa_sede='$programa_sede'";
 	return mysqli_query($conexion, $sql);
 }
+
+//SILABOS
+function buscarSilabosById($conexion, $id)
+{
+	$sql = "SELECT * FROM acad_silabos WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarSilabosByIdProgramacion($conexion, $id)
+{
+	$sql = "SELECT * FROM acad_silabos WHERE id_prog_unidad_didactica='$id'";
+	return mysqli_query($conexion, $sql);
+}
+
+// PROGRAMACION ACTIVIDADES DE SILABO
+function buscarProgActividadesSilaboById($conexion, $id){
+	$sql = "SELECT * FROM acad_programacion_actividades_silabo WHERE id='$id' ORDER BY semana";
+	return mysqli_query($conexion, $sql);
+}
+function buscarProgActividadesSilaboByIdSilabo($conexion, $id){
+	$sql = "SELECT * FROM acad_programacion_actividades_silabo WHERE id_silabo='$id' ORDER BY semana";
+	return mysqli_query($conexion, $sql);
+}
+function buscarProgActividadesSilaboByIdSilabo_16($conexion, $id){
+	$sql = "SELECT * FROM acad_programacion_actividades_silabo WHERE id_silabo='$id' ORDER BY semana LIMIT 16";
+	return mysqli_query($conexion, $sql);
+}
+function buscarProgActividadesSilaboByIdSilaboAndSemana($conexion, $idSilabo, $semana){
+	$sql = "SELECT * FROM acad_programacion_actividades_silabo WHERE id_silabo='$idSilabo' AND semana='$semana'";
+	return mysqli_query($conexion, $sql);
+}
+
+// SESIONES DE APRENDIZAJE
+function buscarSesionAprendizajeById($conexion, $id){
+	$sql = "SELECT * FROM acad_sesion_aprendizaje WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarSesionAprendizajeByIdProgActividadesSilabo($conexion, $id){
+	$sql = "SELECT * FROM acad_sesion_aprendizaje WHERE id_prog_actividad_silabo='$id'";
+	return mysqli_query($conexion, $sql);
+}
+
+//MOMENTOS SESION DE APRENDIZAJE
+function buscarMomentosSesionAprendizajeById($conexion, $id){
+	$sql = "SELECT * FROM acad_momentos_sesion_aprendizaje WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarMomentosSesionAprendizajeByIdSesion($conexion, $id){
+	$sql = "SELECT * FROM acad_momentos_sesion_aprendizaje WHERE id_sesion_aprendizaje='$id'";
+	return mysqli_query($conexion, $sql);
+}
+
+//ACTIVIDAD DE EVALUACION DE SESION DE APRENDIZAJE
+function buscarActividadEvaluacionById($conexion, $id){
+	$sql = "SELECT * FROM acad_actividad_evaluacion_sesion_aprendizaje WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarActividadEvaluacionByIdSesion($conexion, $id){
+	$sql = "SELECT * FROM acad_actividad_evaluacion_sesion_aprendizaje WHERE id_sesion_aprendizaje='$id'";
+	return mysqli_query($conexion, $sql);
+}
+
 
 // MATRICULAS
 

@@ -145,21 +145,24 @@ if (!verificar_sesion($conexion)) {
                                                                 $id_unidad_didactica = $res_busc_programacion['id_unidad_didactica'];
                                                                 $busc_unidad_didactica = buscarUnidadDidacticaById($conexion, $id_unidad_didactica);
                                                                 $res_b_unidad_didactica = mysqli_fetch_array($busc_unidad_didactica);
-                                                                $id_programa_estudio = $res_b_unidad_didactica['id_programa_estudio'];
-                                                                $id_modulo_formativo = $res_b_unidad_didactica['id_modulo'];
-                                                                $id_semestre = $res_b_unidad_didactica['id_semestre'];
-                                                                $id_docente = $res_busc_programacion['id_docente'];
 
+                                                                $id_semestre = $res_b_unidad_didactica['id_semestre'];
                                                                 $busc_semestre = buscarSemestreById($conexion, $id_semestre);
                                                                 $res_b_semestre = mysqli_fetch_array($busc_semestre);
 
+                                                                $id_modulo_formativo = $res_b_semestre['id_modulo_formativo'];
                                                                 $ejec_busc_modulo = buscarModuloFormativoById($conexion, $id_modulo_formativo);
                                                                 $res_busc_modulo = mysqli_fetch_array($ejec_busc_modulo);
 
+                                                                $id_programa_estudio = $res_busc_modulo['id_programa_estudio'];
+                                                                $b_pprograma_estudio = buscarProgramaEstudioById($conexion, $id_programa_estudio);
+                                                                $rb_programa_estudio = mysqli_fetch_array($b_pprograma_estudio);
+                                                                
+                                                                $id_docente = $res_busc_programacion['id_docente'];
                                                                 $busc_docente = buscarUsuarioById($conexion, $id_docente);
                                                                 $res_b_docente = mysqli_fetch_array($busc_docente);
                                                                 ?>
-                                                                <td><?php echo $rb_pe['nombre']; ?></td>
+                                                                <td><?php echo $rb_programa_estudio['nombre']; ?></td>
                                                                 <?php
 
                                                                 ?>

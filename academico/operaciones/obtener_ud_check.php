@@ -1,0 +1,31 @@
+<?php
+include "../../include/conexion.php";
+include "../../include/busquedas.php";
+include "../../include/funciones.php";
+session_start();
+$id_sem = $_POST['id_sem'];
+$id_pe = $_POST['id_pe'];
+$id_sede = $_SESSION['acad_sede'];
+
+$b_pe_sede = buscarProgramaEstudioSedeByIdSedePe($conexion, $id_sede, $id_pe);
+$rb_pe_sede = mysqli_fetch_array($b_pe_sede);
+$id_pe_sede = $rb_pe_sede['id'];
+
+$ejec_cons = buscarUnidadDidacticaByIdSemestre($conexion, $id_sem);
+
+$cadena = '<div class="checkbox">
+		<label>
+		  <input type="checkbox" onchange="select_all();" id="all_check"> <b> SELECCIONAR TODAS LAS UNIDADES DIDÁCTICAS *</b>
+		</label>
+		</div>';
+
+while ($mostrar = mysqli_fetch_array($ejec_cons)) {
+    $id_unidad_didactica = $mostrar["id"];
+    $busc_progr = buscarProgramacionByUd_Peridodo_ProgramaSede($conexion, $id_unidad_didactica, $id_pe_sede, $_SESSION['acad_periodo']);
+    $cont = mysqli_num_rows($busc_progr);
+    if ($cont > 0) {
+        $res_ud = mysqli_fetch_array($busc_progr);
+        $cadena = $cadena . '<div class="checkbox"><label><input type="checkbox" name="unidades_didacticas" onchange="gen_arr_uds();" value="' . $res_ud["id"] . '">' . $mostrar["nombre"] . '</label></div>';
+    }
+}
+echo $cadena;

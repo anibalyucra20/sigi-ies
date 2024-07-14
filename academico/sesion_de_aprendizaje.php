@@ -167,7 +167,7 @@ if (!verificar_sesion($conexion)) {
                                                                 </div>
                                                                 <div class="x_content">
                                                                     <br />
-                                                                    <form role="form" action="operaciones/copiar_informacion_sesion.php" method="POST" class="form-horizontal form-label-left input_mask">
+                                                                    <form role="form" action="operaciones/copiar_informacion_sesion_aprendizaje.php" method="POST" class="form-horizontal form-label-left input_mask">
                                                                         <input type="hidden" name="myidactual" value="<?php echo $id_sesion; ?>">
                                                                         <div class="form-group">
                                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Copiar Sesión de : </label>

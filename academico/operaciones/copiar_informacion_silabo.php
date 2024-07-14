@@ -1,13 +1,13 @@
 <?php
-include("../include/conexion.php");
-include("../include/busquedas.php");
-include("../include/funciones.php");
-include("../include/verificar_sesion_acad.php");
+include("../../include/conexion.php");
+include("../../include/busquedas.php");
+include("../../include/funciones.php");
+include("../../include/verificar_sesion_acad.php");
 
 if (!verificar_sesion($conexion)) {
     $sistema = base64_encode('S_ACAD');
     echo "<script>
-                  window.location.replace('../passport/index?data=" . $sistema . "');
+                  window.location.replace('../../passport/index?data=" . $sistema . "');
               </script>";
 } else {
     // validamos si su rol corresponde
@@ -35,10 +35,11 @@ if (!verificar_sesion($conexion)) {
     $rb_sede_act = mysqli_fetch_array($b_sede_act);
 
     if ($contar_permiso == 0 || $rb_usuario['estado'] == 0 ) {
-        echo "<center><h1>PERMISOS NO SUFICIENTES PARA ACCEDER A LA PÁGINA SOLICITADA</h1><br>
-    <a href='../academico/'>Regresar</a><br>
-    <a href='../include/cerrar_sesion_sigi.php'>Cerrar Sesión</a><br>
-    </center>";
+        echo "<script>
+					alert('Error, PERMISOS NO SUFICIENTES PARA REALIZAR LA OPERACIÓN');
+					window.history.back();
+				</script>
+			";
     } else {
 
         $id_prog_actual = $_POST['myidactual'];
@@ -101,7 +102,7 @@ if (!verificar_sesion($conexion)) {
 
         echo "<script>
 			alert('Datos Copiados Correctamente');
-			window.location= '../silabos?id=" . base64_encode($id_prog_actual) . "';
+			window.location= '../silabos?data=" . base64_encode($id_prog_actual) . "';
 				</script>
 			";
     }

@@ -123,7 +123,7 @@ if (!verificar_sesion($conexion)) {
                                                     $ejec_busc_est = buscarUsuarioEstudiantesBySedePeriodo($conexion, $id_sede_act, $id_periodo_act);
                                                     while ($res_busc_est = mysqli_fetch_array($ejec_busc_est)) {
                                                         $id_est = $res_busc_est['id'];
-                                                        $b_estudiante_programa = buscarEstudianteByEst_PeId($conexion, $id_est);
+                                                        $b_estudiante_programa = buscarEstudiantePeById_est($conexion, $id_est);
                                                         while ($rb_est_programa = mysqli_fetch_array($b_estudiante_programa)) {
                                                             $cont++;
                                                     ?>

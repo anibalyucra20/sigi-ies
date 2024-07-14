@@ -57,12 +57,12 @@ function buscarUsuarioEstudiantesBySedePeriodo($conexion, $sede, $periodo)
 	return mysqli_query($conexion, $sql);
 }
 
-function buscarEstudianteByEst_PeId($conexion, $id_usu)
+function buscarEstudiantePeById_est($conexion, $id_usu)
 {
 	$sql = "SELECT * FROM acad_estudiante_programa WHERE id_usuario='$id_usu'";
 	return mysqli_query($conexion, $sql);
 }
-function buscarEstudianteByEst_Pe($conexion, $id_usu, $id_pe)
+function buscarEstudiantePeByEst_Pe($conexion, $id_usu, $id_pe)
 {
 	$sql = "SELECT * FROM acad_estudiante_programa WHERE id_usuario='$id_usu' AND id_programa_estudio='$id_pe'";
 	return mysqli_query($conexion, $sql);
@@ -422,5 +422,67 @@ function buscarActividadEvaluacionByIdSesion($conexion, $id){
 function buscarMatriculaByPeriodoSede($conexion, $periodo, $sede)
 {
 	$sql = "SELECT * FROM acad_matricula WHERE id_periodo_academico='$periodo' AND id_sede='$sede'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarMatriculaByEstPeriodoSede($conexion,$estudiante, $periodo, $sede)
+{
+	$sql = "SELECT * FROM acad_matricula WHERE id_periodo_academico='$periodo' AND id_sede='$sede' AND id_estudiante='$estudiante'";
+	return mysqli_query($conexion, $sql);
+}
+
+// DETALLE DE MATRICULA
+function buscarDetalleMatriculaByIdProgramacion($conexion, $id_prog){
+	$sql = "SELECT * FROM acad_detalle_matricula WHERE id_programacion_ud='$id_prog'";
+	return mysqli_query($conexion, $sql);
+}
+
+// CALIFICACIONES
+
+function buscarCalificacionById($conexion, $id){
+	$sql = "SELECT * FROM acad_calificacion WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarCalificacionByIdDetalleMatricula($conexion, $id_detalle){
+	$sql = "SELECT * FROM acad_calificacion WHERE id_detalle_matricula = '$id_detalle' ORDER BY nro_calificacion";
+	return mysqli_query($conexion, $sql);
+}
+function buscarCalificacionByIdDetalleMatricula_nro($conexion, $id_det_mat, $nro_calif){
+	$sql = "SELECT * FROM acad_calificacion WHERE id_detalle_matricula = '$id_det_mat' AND nro_calificacion='$nro_calif' ORDER BY nro_calificacion";
+	return mysqli_query($conexion, $sql);
+}
+
+// EVALUACION
+function buscarEvaluacionById($conexion, $id){
+	$sql = "SELECT * FROM acad_evaluacion WHERE id = '$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarEvaluacionByIdCalificacion($conexion, $id){
+	$sql = "SELECT * FROM acad_evaluacion WHERE id_calificacion = '$id' ORDER BY id";
+	return mysqli_query($conexion, $sql);
+}
+function buscarEvaluacionByIdCalificacion_detalle($conexion, $id, $detalle){
+	$sql = "SELECT * FROM acad_evaluacion WHERE id_calificacion = '$id' AND detalle='$detalle' ORDER BY id";
+	return mysqli_query($conexion, $sql);
+}
+
+// CRITERIO DE EVALUACION
+function buscarCriterioEvaluacionByEvaluacion($conexion, $id){
+	$sql = "SELECT * FROM acad_criterio_evaluacion WHERE id_evaluacion = '$id' ORDER BY orden";
+	return mysqli_query($conexion, $sql);
+}
+function buscarCriterioEvaluacionByEvaluacionOrden($conexion, $id, $orden){
+	$sql = "SELECT * FROM acad_criterio_evaluacion WHERE id_evaluacion = '$id' AND orden='$orden' ORDER BY orden";
+	return mysqli_query($conexion, $sql);
+}
+
+
+// ASISTENCIAS
+
+function buscarAsistenciaByIdSesion($conexion, $id_sesion){
+	$sql = "SELECT * FROM acad_asistencia WHERE id_sesion_aprendizaje='$id_sesion'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarAsistenciaBySesionAndDetalleEstudiante($conexion, $id, $detalle_mat){
+	$sql = "SELECT * FROM acad_asistencia WHERE id_sesion_aprendizaje='$id' AND id_detalle_matricula='$detalle_mat'";
 	return mysqli_query($conexion, $sql);
 }

@@ -96,7 +96,26 @@ if (!verificar_sesion($conexion)) {
             <link href="../plantilla/Gentella/build/css/custom.min.css" rel="stylesheet">
             <!-- Script obtenido desde CDN jquery -->
             <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-
+            <script>
+                function confirmard() {
+                    var r = confirm("Estas Seguro de Duplicar la sesion de Aprendizaje?");
+                    if (r == true) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            </script>
+            <script>
+                function confirmardelete() {
+                    var r = confirm("Estas Seguro de Eliminar la sesion de Aprendizaje?");
+                    if (r == true) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            </script>
         </head>
 
         <body class="nav-md">
@@ -139,7 +158,7 @@ if (!verificar_sesion($conexion)) {
                                                                 </div>
                                                                 <div class="x_content">
                                                                     <br />
-                                                                    <form role="form" action="operaciones/copiar_informacion_sesiones.php" method="POST" class="form-horizontal form-label-left input_mask">
+                                                                    <form role="form" action="operaciones/copiar_informacion_sesiones_aprendizaje.php" method="POST" class="form-horizontal form-label-left input_mask">
                                                                         <input type="hidden" name="myidactual" value="<?php echo $id_prog; ?>">
                                                                         <div class="form-group">
                                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Copiar Sesiones de : </label>
@@ -172,14 +191,14 @@ if (!verificar_sesion($conexion)) {
                                                                                             $res_busc_semestre = mysqli_fetch_array($ejec_busc_semestre);
 
                                                                                             $id_modulo = $res_busc_semestre['id_modulo_formativo'];
-                                                                                            $ejec_busc_modulo= buscarModuloFormativoById($conexion, $id_modulo);
-                                                                                            $res_busc_modulo= mysqli_fetch_array($ejec_busc_modulo);
+                                                                                            $ejec_busc_modulo = buscarModuloFormativoById($conexion, $id_modulo);
+                                                                                            $res_busc_modulo = mysqli_fetch_array($ejec_busc_modulo);
 
                                                                                             $id_carrera = $res_busc_modulo['id_programa_estudio'];
                                                                                             $ejec_busc_carrera = buscarProgramaEstudioById($conexion, $id_carrera);
                                                                                             $res_busc_carrera = mysqli_fetch_array($ejec_busc_carrera);
 
-                                                                                            
+
                                                                                     ?>
                                                                                             <option value="<?php echo $id_prog_a_copiar; ?>"><?php echo $res_b_ud['nombre'] . " - " . $res_busc_carrera['nombre'] . " - " . $res_busc_semestre['descripcion'] . " - " . $r_b_periodo_acadd['nombre']; ?></option>
                                                                                     <?php
@@ -249,9 +268,9 @@ if (!verificar_sesion($conexion)) {
                                                                 <td>
                                                                     <a title="Ver / Editar" class="btn btn-success" href="sesion_de_aprendizaje?data=<?php echo $data; ?>"><i class="fa fa-pencil-square-o"></i></a>
                                                                     <a title="Imprimir" class="btn btn-info" target="_blank" href="imprimir_sesion_aprendizaje?data=<?php echo $data; ?>"><i class="fa fa-print"></i></a>
-                                                                    <a title="Duplicar Sesión de Aprendizaje" class="btn btn-warning" href="operaciones/duplicar_sesion?data=<?php echo $data; ?>&data2=<?php echo $id_prog; ?>" onclick="return confirmard();"><i class="fa fa-plus-square"></i></a>
+                                                                    <a title="Duplicar Sesión de Aprendizaje" class="btn btn-warning" href="operaciones/duplicar_sesion_aprendizaje?data=<?php echo $data; ?>&data2=<?php echo base64_encode($id_prog); ?>" onclick="return confirmard();"><i class="fa fa-plus-square"></i></a>
                                                                     <?php if ($contar > 1) { ?>
-                                                                        <a title="Eliminar Sesión de Aprendizaje" class="btn btn-danger" href="operaciones/eliminar_sesion?data=<?php echo $data; ?>&data2=<?php echo $id_prog; ?>" onclick="return confirmardelete();"><i class="fa fa-remove"></i></a>
+                                                                        <a title="Eliminar Sesión de Aprendizaje" class="btn btn-danger" href="operaciones/eliminar_sesion_aprendizaje?data=<?php echo $data; ?>&data2=<?php echo base64_encode($id_prog); ?>" onclick="return confirmardelete();"><i class="fa fa-remove"></i></a>
                                                                     <?php } ?>
 
                                                                 </td>
@@ -265,79 +284,78 @@ if (!verificar_sesion($conexion)) {
                                             </table>
 
                                         </div>
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                        <!-- /page content -->
-
-                        <!-- footer content -->
-                        <?php
-                        include("../include/footer.php");
-                        ?>
-                        <!-- /footer content -->
                     </div>
+                    <!-- /page content -->
+
+                    <!-- footer content -->
+                    <?php
+                    include("../include/footer.php");
+                    ?>
+                    <!-- /footer content -->
                 </div>
+            </div>
 
-                <!-- jQuery -->
-                <script src="../plantilla/Gentella/vendors/jquery/dist/jquery.min.js"></script>
-                <!-- Bootstrap -->
-                <script src="../plantilla/Gentella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-                <!-- FastClick -->
-                <script src="../plantilla/Gentella/vendors/fastclick/lib/fastclick.js"></script>
-                <!-- NProgress -->
-                <script src="../plantilla/Gentella/vendors/nprogress/nprogress.js"></script>
-                <!-- iCheck -->
-                <script src="../plantilla/Gentella/vendors/iCheck/icheck.min.js"></script>
-                <!-- Datatables -->
-                <script src="../plantilla/Gentella/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-                <script src="../plantilla/Gentella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/jszip/dist/jszip.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/pdfmake/build/pdfmake.min.js"></script>
-                <script src="../plantilla/Gentella/vendors/pdfmake/build/vfs_fonts.js"></script>
+            <!-- jQuery -->
+            <script src="../plantilla/Gentella/vendors/jquery/dist/jquery.min.js"></script>
+            <!-- Bootstrap -->
+            <script src="../plantilla/Gentella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+            <!-- FastClick -->
+            <script src="../plantilla/Gentella/vendors/fastclick/lib/fastclick.js"></script>
+            <!-- NProgress -->
+            <script src="../plantilla/Gentella/vendors/nprogress/nprogress.js"></script>
+            <!-- iCheck -->
+            <script src="../plantilla/Gentella/vendors/iCheck/icheck.min.js"></script>
+            <!-- Datatables -->
+            <script src="../plantilla/Gentella/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+            <script src="../plantilla/Gentella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/jszip/dist/jszip.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/pdfmake/build/pdfmake.min.js"></script>
+            <script src="../plantilla/Gentella/vendors/pdfmake/build/vfs_fonts.js"></script>
 
-                <!-- Custom Theme Scripts -->
-                <script src="../plantilla/Gentella/build/js/custom.min.js"></script>
-                <script>
-                    $(document).ready(function() {
-                        $('#example').DataTable({
-                            "language": {
-                                "processing": "Procesando...",
-                                "lengthMenu": "Mostrar _MENU_ registros",
-                                "zeroRecords": "No se encontraron resultados",
-                                "emptyTable": "Ningún dato disponible en esta tabla",
-                                "sInfo": "Mostrando del _START_ al _END_ de un total de _TOTAL_ registros",
-                                "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                                "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                                "search": "Buscar:",
-                                "infoThousands": ",",
-                                "loadingRecords": "Cargando...",
-                                "paginate": {
-                                    "first": "Primero",
-                                    "last": "Último",
-                                    "next": "Siguiente",
-                                    "previous": "Anterior"
-                                },
-                            }
-                        });
-
+            <!-- Custom Theme Scripts -->
+            <script src="../plantilla/Gentella/build/js/custom.min.js"></script>
+            <script>
+                $(document).ready(function() {
+                    $('#example').DataTable({
+                        "language": {
+                            "processing": "Procesando...",
+                            "lengthMenu": "Mostrar _MENU_ registros",
+                            "zeroRecords": "No se encontraron resultados",
+                            "emptyTable": "Ningún dato disponible en esta tabla",
+                            "sInfo": "Mostrando del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                            "search": "Buscar:",
+                            "infoThousands": ",",
+                            "loadingRecords": "Cargando...",
+                            "paginate": {
+                                "first": "Primero",
+                                "last": "Último",
+                                "next": "Siguiente",
+                                "previous": "Anterior"
+                            },
+                        }
                     });
-                </script>
+
+                });
+            </script>
 
 
-                <?php mysqli_close($conexion); ?>
+            <?php mysqli_close($conexion); ?>
         </body>
 
         </html>

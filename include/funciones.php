@@ -164,7 +164,7 @@ function codificar($datos)
 
 function registrar_usuario_pe($conexion, $id_usuario, $id_pe, $periodo)
 {
-    $b_est_pe = buscarEstudianteByEst_Pe($conexion, $id_usuario, $id_pe);
+    $b_est_pe = buscarEstudiantePeByEst_Pe($conexion, $id_usuario, $id_pe);
     $cont_rb = mysqli_num_rows($b_est_pe);
 
     if ($cont_rb > 0) {
@@ -314,4 +314,31 @@ function realizar_programacion($conexion, $unidad_didactica, $id_ult_periodo,$pr
 
 //>>>>>>>>>>>>>>>>>>>>> FIN DE FUNCION PARA REALIZAR PROGRAMACION DE UNIDAD DIDACTICA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+//>>>>>>>>>>>>>>>>>>>>> INICIO DE FUNCION PARA VER LA CANTIDAD DE CRITERIOS DE EVALUACION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+function buscar_cantidad_criterios_programacion($conexion, $id_prog, $det_evaluacion, $nro_calif)
+{
+    $b_det_mat = buscarDetalleMatriculaByIdProgramacion($conexion, $id_prog);
+    if (mysqli_num_rows($b_det_mat) < 1) {
+        // si no hay ningun matriculado regresamos 5 como los criterios de evaluacion
+        return 2;
+    }
+    $r_b_det_mat = mysqli_fetch_array($b_det_mat);
+    
+    $b_califacion = buscarCalificacionByIdDetalleMatricula_nro($conexion, $r_b_det_mat['id'], $nro_calif);
+    $r_b_calificacion = mysqli_fetch_array($b_califacion);
+
+    $b_evaluacion = buscarEvaluacionByIdCalificacion_detalle($conexion, $r_b_calificacion['id'], $det_evaluacion);
+    $r_b_evaluacion = mysqli_fetch_array($b_evaluacion);
+
+    $b_crit_evaluacion = buscarCriterioEvaluacionByEvaluacion($conexion, $r_b_evaluacion['id']);
+    $cant_crit = mysqli_num_rows($b_crit_evaluacion);
+    if ($cant_crit<1) {
+        return 2;
+    }else {
+        return $cant_crit;
+    }
+    
+}
+//>>>>>>>>>>>>>>>>>>>>> FIN DE FUNCION PARA VER LA CANTIDAD DE CRITERIOS DE EVALUACION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

@@ -41,42 +41,34 @@ if (!verificar_sesion($conexion)) {
 			";
     } else {
 
+        $detalle_matricula = explode(",", $_POST['mat_relacion']);
 
-        $id_periodo_acad = $id_periodo_act;
-        $id_est = $_POST['id_est'];
-        $carrera = $_POST['carrera_m'];
+
+        $id_matricula = $_POST['id_mat'];
         $semestre = $_POST['semestre'];
         $turno = $_POST['turno'];
         $seccion = $_POST['seccion'];
-        $hoy = date("Y-m-d H:m:i");
-        $detalle_matricula = explode(",", $_POST['mat_relacion']);
 
-        //VERIFICAMOS QUE EL ESTUDIANTE NO ESTE MATRICULADO EN ESTE PERIODO
-        $busc_matricula = buscarMatriculaByEstPeriodoSede($conexion, $id_est, $id_periodo_acad, $id_sede_act);
-        $cont_b_matricula = mysqli_num_rows($busc_matricula);
+        //buscamos datos de matricula
+        $b_mat = buscarMatriculaById($conexion, $id_matricula);
+        $r_b_mat = mysqli_fetch_array($b_mat);
 
-        if ($cont_b_matricula > 0) {
-            echo "<script>
-			alert('El estudiante ya esta matriculado en esta sede y periodo Académico');
-			window.history.back();
-		</script>
-		";
-        } else {
-            //REGISTRAMOS LA MATRICULA
-            $reg_matricula = "INSERT INTO acad_matricula (id_periodo_academico,id_sede,id_programa_estudio,id_semestre,turno,seccion,id_estudiante,licencia,fecha_hora_registro) VALUES ('$id_periodo_acad','$id_sede_act','$carrera','$semestre','$turno','$seccion','$id_est','','$hoy')";
-            $ejecutar_reg_matricula = mysqli_query($conexion, $reg_matricula);
-            //buscamos el ultimo registro de la matricula
-            $id_matricula = mysqli_insert_id($conexion);
+        //actualizamos semestre, turno y seccion de matricula
+        $consulta = "UPDATE acad_matricula SET id_semestre='$semestre', turno='$turno',seccion='$seccion' WHERE id='$id_matricula'";
+        mysqli_query($conexion, $consulta);
 
-
-            //recorremos el array del detalle para buscar datos complementarios y registrar el detalle y las calificaciones
-            foreach ($detalle_matricula as $valor) {
+        $id_est = $r_b_mat['id_estudiante'];
+        //recorremos el array del detalle para buscar datos complementarios y registrar el detalle y las calificaciones
+        foreach ($detalle_matricula as $valor) {
+            $b_det_mat_prog = buscarDetalleMatriculaByIdMatriculaAndProgrmacion($conexion, $id_matricula, $valor);
+            $cont_b_det_mat_prog = mysqli_num_rows($b_det_mat_prog);
+            if ($cont_b_det_mat_prog == 0) {
                 registrar_detalle_matricula($conexion, $valor, $id_matricula);
             }
-            echo "<script>
-            alert('Matricula Exitosa');
-            window.location= '../matriculas'
-            </script>";
         }
+        echo "<script>
+                
+                window.location= '../ver_matricula?data=" . base64_encode($id_matricula) . "'
+    			</script>";
     }
 }

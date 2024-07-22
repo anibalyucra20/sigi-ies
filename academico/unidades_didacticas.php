@@ -144,7 +144,7 @@ if (!verificar_sesion($conexion)) {
                                                             $res_busc_carrera = mysqli_fetch_array($ejec_busc_carrera);
                                                             ?>
                                                             <td><?php echo $res_busc_carrera['nombre']; ?></td>
-                                                            
+
                                                             <td><?php echo $res_busc_semestre['descripcion']; ?></td>
                                                             <?php
                                                             $ejec_busc_docente = buscarUsuarioById($conexion, $res_busc_prog['id_docente']);
@@ -153,13 +153,12 @@ if (!verificar_sesion($conexion)) {
                                                             <td><?php echo $res_b_ud['nombre']; ?></td>
                                                             <td><?php echo $res_busc_docente['apellidos_nombres']; ?></td>
                                                             <td>
-
-                                                                    <a title="Sílabos" class="btn btn-warning" href="silabos?data=<?php echo $data; ?>"><i class="fa fa-book"></i></a>
-                                                                    <a title="Sesiones de Aprendizaje" class="btn btn-primary" href="sesiones?data=<?php echo $data; ?>"><i class="fa fa-briefcase"></i></a>
-                                                                    <a title="Asistencia" class="btn btn-success" href="asistencias?data=<?php echo $data; ?>"><i class="fa fa-group"></i></a>
-                                                                    <a title="Calificaciones" class="btn btn-info" href="calificaciones?data=<?php echo $data; ?>"><i class="fa fa-pencil-square-o"></i></a>
-                                                                    <a title="Caratula" class="btn btn-default" target="_blank" href="imprimir_caratula?data=<?php echo $data; ?>"><i class="fa fa-file-pdf-o"></i></a>
-                                                                    <a title="Informe Final" class="btn btn-danger" href="informe_final?data=<?php echo $data; ?>"><i class="fa fa-bar-chart"></i></a>
+                                                                <a title="Sílabos" class="btn btn-warning" href="silabos?data=<?php echo $data; ?>"><i class="fa fa-book"></i></a>
+                                                                <a title="Sesiones de Aprendizaje" class="btn btn-primary" href="sesiones?data=<?php echo $data; ?>"><i class="fa fa-briefcase"></i></a>
+                                                                <a title="Asistencia" class="btn btn-success" href="asistencias?data=<?php echo $data; ?>"><i class="fa fa-group"></i></a>
+                                                                <a title="Calificaciones" class="btn btn-info" href="calificaciones?data=<?php echo $data; ?>"><i class="fa fa-pencil-square-o"></i></a>
+                                                                <a title="Caratula" class="btn btn-default" target="_blank" href="imprimir_caratula?data=<?php echo $data; ?>"><i class="fa fa-file-pdf-o"></i></a>
+                                                                <a title="Informe Final" class="btn btn-danger" href="informe_final?data=<?php echo $data; ?>"><i class="fa fa-bar-chart"></i></a>
                                                             </td>
                                                         </tr>
                                                 <?php

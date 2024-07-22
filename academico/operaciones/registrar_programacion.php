@@ -48,13 +48,15 @@ if (!verificar_sesion($conexion)) {
             $id_ud = $_POST['unidad_didactica'];
             $id_docente = $_POST['docente'];
             $id_pe = $_POST['carrera_m'];
+            $turno = $_POST['turno'];
+            $seccion = $_POST['seccion'];
 
             $b_pe_sede = buscarProgramaEstudioSedeByIdSedePe($conexion, $id_sede_act, $id_pe);
             $rb_pe_sede = mysqli_fetch_array($b_pe_sede);
             $id_pe_sede = $rb_pe_sede['id'];
 
             //verificar que  docente no este programado en la unidad didactica
-            $busc_programacion_existe = buscarProgramacionByUd_Peridodo_ProgramaSede($conexion, $id_ud, $id_pe_sede, $id_periodo_act);
+            $busc_programacion_existe = buscarProgramacionByUd_Peridodo_ProgramaSedeTurnoSeccion($conexion, $id_ud, $id_pe_sede, $id_periodo_act,$turno,$seccion);
             $conteo_b_programacion_existe = mysqli_num_rows($busc_programacion_existe);
 
 
@@ -64,7 +66,7 @@ if (!verificar_sesion($conexion)) {
                 $rb_datos_sistema = mysqli_fetch_array($b_datos_sistema);
                 $cant_semanas = $rb_datos_sistema['cant_semanas'];
 
-                $registro_programacion = realizar_programacion($conexion, $id_ud, $id_periodo_act, $id_pe_sede, $id_docente, $cant_semanas);
+                $registro_programacion = realizar_programacion($conexion, $id_ud, $id_periodo_act, $id_pe_sede, $id_docente, $cant_semanas,$turno,$seccion);
 
                 if ($registro_programacion) {
                     echo "<script>
@@ -75,14 +77,14 @@ if (!verificar_sesion($conexion)) {
                 } else {
                     echo "<script>
                         alert('Error, falló en el registro');
-                        window.history.back();
+                        window.location= '../programacion'
                         </script>
                     ";
                 }
             } else {
                 echo "<script>
-			        alert('Error, Esta Unidad Didáctica ya está programado para este periodo Académico');
-			        window.history.back();
+			        alert('Error, Esta Unidad Didáctica ya está programado para este periodo Académico, Turno y Sección');
+			        window.location= '../programacion'
 		            </script>
 		        ";
             }

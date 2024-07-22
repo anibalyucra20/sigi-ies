@@ -47,6 +47,7 @@ if (!verificar_sesion($conexion)) {
         } else {
             $agregar = 0;
         }
+
 ?>
         <!DOCTYPE html>
         <html lang="es">
@@ -117,6 +118,8 @@ if (!verificar_sesion($conexion)) {
                                                         <th>Programa de Estudios</th>
                                                         <th>Semestre</th>
                                                         <th>Unidad Didáctica</th>
+                                                        <th>Turno</th>
+                                                        <th>Sección</th>
                                                         <th>Docente</th>
                                                         <?php if ($agregar == 1) {
                                                             echo '<th>Acciones</th>';
@@ -157,10 +160,26 @@ if (!verificar_sesion($conexion)) {
                                                                 $id_programa_estudio = $res_busc_modulo['id_programa_estudio'];
                                                                 $b_pprograma_estudio = buscarProgramaEstudioById($conexion, $id_programa_estudio);
                                                                 $rb_programa_estudio = mysqli_fetch_array($b_pprograma_estudio);
-                                                                
+
                                                                 $id_docente = $res_busc_programacion['id_docente'];
                                                                 $busc_docente = buscarUsuarioById($conexion, $id_docente);
                                                                 $res_b_docente = mysqli_fetch_array($busc_docente);
+
+                                                                switch ($res_busc_programacion['turno']) {
+                                                                    case 'M':
+                                                                        $turno = 'MAÑANA';
+                                                                        break;
+                                                                    case 'T':
+                                                                        $turno = 'TARDE';
+                                                                        break;
+                                                                    case 'N':
+                                                                        $turno = 'NOCHE';
+                                                                        break;
+                                                                    default:
+                                                                        $turno = '';
+                                                                        break;
+                                                                }
+
                                                                 ?>
                                                                 <td><?php echo $rb_programa_estudio['nombre']; ?></td>
                                                                 <?php
@@ -168,6 +187,8 @@ if (!verificar_sesion($conexion)) {
                                                                 ?>
                                                                 <td><?php echo $res_b_semestre['descripcion']; ?></td>
                                                                 <td><?php echo $res_b_unidad_didactica['nombre']; ?></td>
+                                                                <td><?php echo $turno; ?></td>
+                                                                <td><?php echo $res_busc_programacion['seccion']; ?></td>
                                                                 <td><?php echo $res_b_docente['apellidos_nombres']; ?></td>
                                                                 <?php if ($agregar == 1) {
                                                                 ?>
@@ -247,15 +268,6 @@ if (!verificar_sesion($conexion)) {
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="form-group">
-                                                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Módulo Formativo : </label>
-                                                                                                <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                                                    <select class="form-control" id="modulo" name="modulo" value="" required="required">
-                                                                                                        <!--las opciones se cargan con ajax y javascript  dependiendo de la carrera elegida,verificar en la parte final-->
-                                                                                                    </select>
-                                                                                                    <br>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="form-group">
                                                                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Semestre : </label>
                                                                                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                                                                                     <select class="form-control" id="semestre" name="semestre" value="" required="required">
@@ -269,6 +281,33 @@ if (!verificar_sesion($conexion)) {
                                                                                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                                                                                     <select class="form-control" id="unidad_didactica" name="unidad_didactica" value="" required="required">
                                                                                                         <!--las opciones se cargan con ajax y javascript  dependiendo de la carrera elegida,verificar en la parte final-->
+                                                                                                    </select>
+                                                                                                    <br>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Turno : </label>
+                                                                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                                                    <select class="form-control" name="turno" value="" required="required">
+                                                                                                        <option value=""></option>
+                                                                                                        <option value="M">Mañana</option>
+                                                                                                        <option value="T">Tarde</option>
+                                                                                                        <option value="N">Noche</option>
+                                                                                                    </select>
+                                                                                                    <br>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Sección : </label>
+                                                                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                                                    <select class="form-control" name="seccion" value="" required="required">
+                                                                                                        <option value=""></option>
+                                                                                                        <?php
+                                                                                                        for ($i = 65; $i <= 90; $i++) {
+                                                                                                            $letter = chr($i);
+                                                                                                            echo '<option value="' . $letter . '">' . $letter . '</option>';
+                                                                                                        }
+                                                                                                        ?>
                                                                                                     </select>
                                                                                                     <br>
                                                                                                 </div>
@@ -330,6 +369,33 @@ if (!verificar_sesion($conexion)) {
                                                                                                     <?php }
                                                                                                     } ?>
                                                                                                     <br><br>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Turno : </label>
+                                                                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                                                    <select class="form-control" name="turno" value="" required="required">
+                                                                                                        <option value=""></option>
+                                                                                                        <option value="M">Mañana</option>
+                                                                                                        <option value="T">Tarde</option>
+                                                                                                        <option value="N">Noche</option>
+                                                                                                    </select>
+                                                                                                    <br>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Sección : </label>
+                                                                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                                                    <select class="form-control" name="seccion" value="" required="required">
+                                                                                                        <option value=""></option>
+                                                                                                        <?php
+                                                                                                        for ($i = 65; $i <= 90; $i++) {
+                                                                                                            $letter = chr($i);
+                                                                                                            echo '<option value="' . $letter . '">' . $letter . '</option>';
+                                                                                                        }
+                                                                                                        ?>
+                                                                                                    </select>
+                                                                                                    <br>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div align="center">
@@ -430,10 +496,7 @@ if (!verificar_sesion($conexion)) {
             <script type="text/javascript">
                 $(document).ready(function() {
                     $('#carrera_m').change(function() {
-                        recargarlista();
-                    });
-                    $('#modulo').change(function() {
-                        recargarsemestre();
+                        cargarsemestres();
                     });
                     $('#semestre').change(function() {
                         recargar_ud();
@@ -442,25 +505,15 @@ if (!verificar_sesion($conexion)) {
                 })
             </script>
             <script type="text/javascript">
-                function recargarlista() {
+                function cargarsemestres() {
                     $.ajax({
                         type: "POST",
-                        url: "operaciones/obtener_modulos.php",
-                        data: "id_carrera=" + $('#carrera_m').val(),
-                        success: function(r) {
-                            $('#modulo').html(r);
-                        }
-                    });
-                }
-            </script>
-            <script type="text/javascript">
-                function recargarsemestre() {
-                    $.ajax({
-                        type: "POST",
-                        url: "operaciones/obtener_semestres.php",
-                        data: "modulo=" + $('#modulo').val(),
+                        url: "operaciones/obtener_semestre_pe.php",
+                        data: "id=" + $('#carrera_m').val(),
                         success: function(r) {
                             $('#semestre').html(r);
+                            listar_uds();
+
                         }
                     });
                 }

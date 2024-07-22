@@ -40,9 +40,11 @@ if (!verificar_sesion($conexion)) {
     <a href='../include/cerrar_sesion_sigi.php'>Cerrar Sesión</a><br>
     </center>";
     } else {
+
+        $id_mat = base64_decode($_GET['data']);
 ?>
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="es">
 
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -88,7 +90,16 @@ if (!verificar_sesion($conexion)) {
                     <!-- page content -->
                     <div class="right_col" role="main">
                         <div class="">
+                            <?php
+                            $b_mat = buscarMatriculaById($conexion, $id_mat);
+                            $r_b_mat = mysqli_fetch_array($b_mat);
 
+                            $b_est = buscarUsuarioById($conexion, $r_b_mat['id_estudiante']);
+                            $r_b_est = mysqli_fetch_array($b_est);
+
+                            $b_pe = buscarProgramaEstudioById($conexion, $r_b_mat['id_programa_estudio']);
+                            $r_b_pe = mysqli_fetch_array($b_pe);
+                            ?>
 
 
                             <div class="row">
@@ -101,37 +112,27 @@ if (!verificar_sesion($conexion)) {
                                         </div>
                                         <div class="x_content">
                                             <br />
-                                            <form role="form" id="myform" action="operaciones/registrar_matricula.php" class="form-horizontal form-label-left input_mask" method="POST">
-
+                                            <form role="form" id="myform" action="operaciones/registrar_nuevo_ud_matricula.php" class="form-horizontal form-label-left input_mask" method="POST">
+                                                <input type="hidden" value="<?php echo $id_mat; ?>" name="id_mat">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">DNI estudiante: </label>
                                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                                        <input class="form-control" type="number" name="dni_est" id="dni_est">
+                                                        <input class="form-control" type="text" name="dni_est" id="dni_est" value="<?php echo $r_b_est['dni']; ?>" readonly>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
-                                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                                        <button type="button" class="btn btn-success" onclick="recargarest();">Buscar</button>
 
-                                                        <br>
-                                                        <br>
-                                                    </div>
-                                                </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Estudiante : </label>
                                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                                        <input type="hidden" id="id_est" name="id_est">
-                                                        <input class="form-control" type="text" name="estudiante" id="estudiante" readonly>
+                                                        <input class="form-control" type="text" name="estudiante" id="estudiante" value="<?php echo $r_b_est['apellidos_nombres']; ?>" readonly>
                                                         <br>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Programa de Estudios : </label>
                                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                                        <select class="form-control" id="carrera_m" name="carrera_m" value="" required="required">
-                                                            <option></option>
-                                                            <!-- datos a traer segun los datos del estudiante -->
+                                                        <select class="form-control" id="carrera_m" name="carrera_m" required="required">
+                                                            <option value="<?php echo $r_b_mat['id_programa_estudio']; ?>" selected><?php echo $r_b_pe['nombre']; ?></option>
                                                         </select>
                                                         <br>
                                                     </div>
@@ -142,6 +143,19 @@ if (!verificar_sesion($conexion)) {
                                                     <div class="col-md-9 col-sm-9 col-xs-12">
                                                         <select class="form-control" id="semestre" name="semestre" value="" required="required">
                                                             <option></option>
+                                                            <?php
+                                                            $b_mf = buscarModuloFormativoByIdPe($conexion, $r_b_mat['id_programa_estudio']);
+                                                            while ($rb_mf = mysqli_fetch_array($b_mf)) {
+                                                                $b_semestre = buscarSemestreByIdModulo_Formativo($conexion, $rb_mf['id']);
+                                                                while ($rb_semestre = mysqli_fetch_array($b_semestre)) {
+                                                            ?>
+                                                                    <option value="<?php echo $rb_semestre['id']; ?>" <?php if ($r_b_mat['id_semestre'] == $rb_semestre['id']) {
+                                                                                                                            echo "selected";
+                                                                                                                        } ?>><?php echo $rb_semestre['descripcion']; ?></option>
+                                                            <?php
+                                                                }
+                                                            }
+                                                            ?>
                                                         </select>
                                                         <br>
                                                     </div>
@@ -188,14 +202,22 @@ if (!verificar_sesion($conexion)) {
 
                                                     </div>
                                                 </div>
+
+
+
                                                 <div align="center">
-                                                    <a href="matriculas.php" class="btn btn-default">Cancelar</a>
+                                                    <a href="matriculas" class="btn btn-default">Cancelar</a>
                                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                                 </div>
 
                                             </form>
                                         </div>
                                     </div>
+
+
+
+
+
                                 </div>
 
                                 <div class="col-md-6 col-xs-12">
@@ -270,9 +292,7 @@ if (!verificar_sesion($conexion)) {
             <!--script para obtener los datos dependiendo del dni-->
             <script type="text/javascript">
                 $(document).ready(function() {
-                    $('#carrera_m').change(function() {
-                        cargarsemestres();
-                    });
+
                     $('#semestre').change(function() {
                         listar_uds();
                     });
@@ -282,62 +302,11 @@ if (!verificar_sesion($conexion)) {
                     $('#seccion').change(function() {
                         listar_uds();
                     });
+                    listar_uds();
                 })
             </script>
-            <script type="text/javascript">
-                function recargarest() {
-                    // funcion para traer datos del estudiante
-                    // Creando el objeto para hacer el request
-                    var request = new XMLHttpRequest();
-                    request.responseType = 'json';
-                    // Objeto PHP que consultaremos
-                    request.open("POST", "operaciones/obtener_estudiante.php");
-                    // Definiendo el listener
-                    request.onreadystatechange = function() {
-                        // Revision si fue completada la peticion y si fue exitosa
-                        if (this.readyState === 4 && this.status === 200) {
-                            // Ingresando la respuesta obtenida del PHP
-                            document.getElementById("id_est").value = this.response.id_est;
-                            document.getElementById("estudiante").value = this.response.nombre;
-                            cargarpe();
 
-                        }
-                    };
-                    // Recogiendo la data del HTML
-                    var myForm = document.getElementById("myform");
-                    var formData = new FormData(myForm);
-                    // Enviando la data al PHP
-                    request.send(formData);
-                }
-            </script>
-            <script type="text/javascript">
-                function cargarpe() {
-                    $.ajax({
-                        type: "POST",
-                        url: "operaciones/obtener_pe_matricula.php",
-                        data: "id=" + $('#id_est').val(),
-                        success: function(r) {
-                            $('#carrera_m').html(r);
-                            listar_uds();
 
-                        }
-                    });
-                }
-            </script>
-            <script type="text/javascript">
-                function cargarsemestres() {
-                    $.ajax({
-                        type: "POST",
-                        url: "operaciones/obtener_semestre_pe.php",
-                        data: "id=" + $('#carrera_m').val(),
-                        success: function(r) {
-                            $('#semestre').html(r);
-                            listar_uds();
-
-                        }
-                    });
-                }
-            </script>
             <script type="text/javascript">
                 function listar_uds() {
                     var carr = $('#carrera_m').val();
@@ -425,6 +394,8 @@ if (!verificar_sesion($conexion)) {
                     gen_arr_uds();
                 };
             </script>
+
+
             <?php mysqli_close($conexion); ?>
         </body>
 

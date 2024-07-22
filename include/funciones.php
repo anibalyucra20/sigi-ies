@@ -186,12 +186,12 @@ function registrar_usuario_pe($conexion, $id_usuario, $id_pe, $periodo)
 
 //>>>>>>>>>>>>>>>>>>>>> FUNCION PARA REALIZAR PROGRAMACION DE UNIDAD DIDACTICA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-function realizar_programacion($conexion, $unidad_didactica, $id_ult_periodo,$programa_sede, $docente, $cant_semanas)
+function realizar_programacion($conexion, $unidad_didactica, $id_ult_periodo, $programa_sede, $docente, $cant_semanas, $turno, $seccion)
 {
 
     $hoy = date("Y-m-d");
 
-    $consulta = "INSERT INTO acad_programacion_unidad_didactica (id_unidad_didactica, id_docente, id_periodo_academico,id_programa_sede, supervisado, reg_evaluacion, reg_auxiliar, prog_curricular, otros, logros_obtenidos, dificultades, sugerencias) VALUES ('$unidad_didactica','$docente','$id_ult_periodo','$programa_sede', 0, 0, 0, 0, 0, '', '', '')";
+    $consulta = "INSERT INTO acad_programacion_unidad_didactica (id_unidad_didactica, id_docente, id_periodo_academico,id_programa_sede,turno,seccion, supervisado, reg_evaluacion, reg_auxiliar, prog_curricular, otros, logros_obtenidos, dificultades, sugerencias) VALUES ('$unidad_didactica','$docente','$id_ult_periodo','$programa_sede','$turno','$seccion', 0, 0, 0, 0, 0, '', '', '')";
     $ejec_reg_programacion = mysqli_query($conexion, $consulta);
     //buscamos el id de la programacion hecha
     $id_programacion = mysqli_insert_id($conexion);
@@ -324,7 +324,7 @@ function buscar_cantidad_criterios_programacion($conexion, $id_prog, $det_evalua
         return 2;
     }
     $r_b_det_mat = mysqli_fetch_array($b_det_mat);
-    
+
     $b_califacion = buscarCalificacionByIdDetalleMatricula_nro($conexion, $r_b_det_mat['id'], $nro_calif);
     $r_b_calificacion = mysqli_fetch_array($b_califacion);
 
@@ -333,12 +333,212 @@ function buscar_cantidad_criterios_programacion($conexion, $id_prog, $det_evalua
 
     $b_crit_evaluacion = buscarCriterioEvaluacionByEvaluacion($conexion, $r_b_evaluacion['id']);
     $cant_crit = mysqli_num_rows($b_crit_evaluacion);
-    if ($cant_crit<1) {
+    if ($cant_crit < 1) {
         return 2;
-    }else {
+    } else {
         return $cant_crit;
     }
-    
 }
 //>>>>>>>>>>>>>>>>>>>>> FIN DE FUNCION PARA VER LA CANTIDAD DE CRITERIOS DE EVALUACION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+//>>>>>>>>>>>>>>>>>>>>> INICIO DE FUNCION PARA REGISTRAR DETALLE DE MATRICULA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+function registrar_detalle_matricula($conexion, $valor, $id_matricula)
+{
+    //$valor es el id_de programacion de unidad didactica
+    //buscaremos el id de la unidad didactica en la programacion de unidades didacticas
+    $busc_prog = buscarProgramacionUDById($conexion, $valor);
+    $res_b_prog = mysqli_fetch_array($busc_prog);
+    $id_ud = $res_b_prog['id_unidad_didactica'];
+
+    //buscamos la cantidad de matriculados para ingresar el orden correcto
+    $b_cant_mat_detalle_mat = buscarDetalleMatriculaByIdProgramacion($conexion, $valor);
+    $cont_r_b_cant_mat_det_mat = mysqli_num_rows($b_cant_mat_detalle_mat);
+    $new_orden = $cont_r_b_cant_mat_det_mat + 1;
+
+    //REGISTRAMOS EL DETALLE DE LA MATRICULA
+    $reg_det_mat =  "INSERT INTO acad_detalle_matricula (id_matricula, orden, id_programacion_ud, recuperacion, mostrar_calificacion) VALUES ('$id_matricula','$new_orden','$valor','',0)";
+    $ejecutar_reg_det_mat = mysqli_query($conexion, $reg_det_mat);
+
+    //buscamos el ultimo registro de detalle matricula
+    $id_detalle_matricula = mysqli_insert_id($conexion);
+
+
+    //buscamos la capacidad de la unidad didactica
+    $busc_capacidad = buscarCapacidadByIdUd($conexion, $id_ud);
+    $orden = 1; //orden en el que inicia las calificaciones
+
+    while ($res_b_capacidad = mysqli_fetch_array($busc_capacidad)) {
+        $id_capacidad = $res_b_capacidad['id'];
+
+        // buscar indicadores de logro de capacidad para saber cuantos calificaciones crearemos
+        $b_indicador = buscarIndCapacidadByIdCapacidad($conexion, $id_capacidad);
+
+        while ($res_b_capacidad = mysqli_fetch_array($b_indicador)) {
+            //REGISTRAMOS LAS CALIFICACION SEGUN LA CANTIDAD DE INDICADORES DE LOGRO
+            $reg_calificacion = "INSERT INTO acad_calificacion (id_detalle_matricula, nro_calificacion, mostrar_calificacion) VALUES ('$id_detalle_matricula','$orden',0)";
+            $ejecutar_reg_calificacion = mysqli_query($conexion, $reg_calificacion);
+
+            $id_calificacion = mysqli_insert_id($conexion);
+            $ponderado_evaluacion = round(100 / 3);
+            //registramos las evaluaciones para las calificaciones - se crearan 3 --> conceptual, procedimental y actitudinal
+            for ($i = 1; $i <= 3; $i++) {
+                if ($i == 1) {
+                    $det_eva = "Conceptual";
+                };
+                if ($i == 2) {
+                    $det_eva = "Procedimental";
+                };
+                if ($i == 3) {
+                    $det_eva = "Actitudinal";
+                };
+                $reg_evaluacion = "INSERT INTO acad_evaluacion (id_calificacion, detalle, ponderado) VALUES ('$id_calificacion','$det_eva','$ponderado_evaluacion')";
+                $ejecutar_reg_evaluacion = mysqli_query($conexion, $reg_evaluacion);
+
+                $id_evaluacion = mysqli_insert_id($conexion);
+                //buscamos matriculas en la programacion de unidad didactica para saber cuantos criterios agregar 
+                // si no existen matriculas por defecto agregara 2 criterios, haya matriculas, contara los criterios de una de las matriculas
+                $cant_crit_eva = buscar_cantidad_criterios_programacion($conexion, $valor, $det_eva, $orden);
+
+
+                $ponderado_c_evaluacion = round(100 / $cant_crit_eva);
+                // registramos los criterios de evaluacion para cada evaluacion
+                for ($j = 1; $j <= $cant_crit_eva; $j++) {
+                    $reg_criterio_evaluacion = "INSERT INTO acad_criterio_evaluacion (id_evaluacion, orden, detalle,calificacion) VALUES ('$id_evaluacion','$j','','')";
+                    $ejecutar_reg_criterio_evaluacion = mysqli_query($conexion, $reg_criterio_evaluacion);
+                }
+            }
+            $orden = $orden + 1;
+        }
+    }
+    //procedemos a crear el registro de asistencia para cada sesion de la ud programada
+    $id_programacion = $valor;
+    //buscar silabo
+    $b_silabo = buscarSilabosByIdProgramacion($conexion, $id_programacion);
+    $r_b_silabo = mysqli_fetch_array($b_silabo);
+    $id_silabo = $r_b_silabo['id'];
+    //buscar programacion de actividades de silabo
+    $b_prog_act_silabo = buscarProgActividadesSilaboByIdSilabo($conexion, $id_silabo);
+
+    while ($r_b_prog_act_silabo = mysqli_fetch_array($b_prog_act_silabo)) {
+        $id_prog_act_silabo = $r_b_prog_act_silabo['id'];
+        //buscamos las sesiones de aprendizaje para generar las asistencias
+        $b_sesion_apre = buscarSesionAprendizajeByIdProgActividadesSilabo($conexion, $id_prog_act_silabo);
+        while ($r_b_sesion_apre = mysqli_fetch_array($b_sesion_apre)) {
+            //generamos asistencia para cada sesion de aprendizaje
+            $id_sesion = $r_b_sesion_apre['id'];
+            $r_asistencia = "INSERT INTO acad_asistencia (id_sesion_aprendizaje, id_detalle_matricula, asistencia) VALUES ('$id_sesion','$id_detalle_matricula','')";
+            $ejecutar_r_asistencia = mysqli_query($conexion, $r_asistencia);
+        }
+    }
+}
+//>>>>>>>>>>>>>>>>>>>>> FIN DE FUNCION PARA VER REGISTRAR DETALLE DE MATRICULA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+
+//>>>>>>>>>>>>>>>>>>>>> INICIO DE FUNCION PARA ORDENAR ESTUDIANTES EN UNA UNIDAD DIDACTA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+function OrdenarEstudiantesUnidadDidactica($conexion, $id_prog)
+{
+
+    //ORDENAMIENTO DE ESTUDIANTES
+    $array_in = [];
+    $b_detalle_mat = buscarDetalleMatriculaByIdProgramacion($conexion, $id_prog);
+    while ($r_b_det_mat = mysqli_fetch_array($b_detalle_mat)) {
+        $b_matricula = buscarMatriculaById($conexion, $r_b_det_mat['id_matricula']);
+        $r_b_mat = mysqli_fetch_array($b_matricula);
+        $b_estudiante = buscarUsuarioById($conexion, $r_b_mat['id_estudiante']);
+        $r_b_est = mysqli_fetch_array($b_estudiante);
+        $array_in[] = $r_b_est['apellidos_nombres'];
+    }
+
+    $collator = collator_create("es");
+    $collator->sort($array_in);
+
+    $b_detalle_mat = buscarDetalleMatriculaByIdProgramacion($conexion, $id_prog);
+    while ($r_b_det_mat = mysqli_fetch_array($b_detalle_mat)) {
+        $id_det_mat = $r_b_det_mat['id'];
+        $mostrar_calif_final = $r_b_det_mat['mostrar_calificacion'];
+        $b_matricula = buscarMatriculaById($conexion, $r_b_det_mat['id_matricula']);
+        $r_b_mat = mysqli_fetch_array($b_matricula);
+        $b_estudiante = buscarUsuarioById($conexion, $r_b_mat['id_estudiante']);
+        $r_b_est = mysqli_fetch_array($b_estudiante);
+        $indice = array_search($r_b_est['apellidos_nombres'], $array_in) + 1;
+        //echo $indice." - ".$r_b_est['apellidos_nombres']."<br>";
+        $consulta = "UPDATE acad_detalle_matricula SET orden='$indice' WHERE id='$id_det_mat'";
+        mysqli_query($conexion, $consulta);
+    }
+}
+
+
+
+//>>>>>>>>>>>>>>>>>>>>> FIN DE FUNCION PARA ORDENAR ESTUDIANTES EN UNA UNIDAD DIDACTA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+//>>>>>>>>>>>>>>>>>>>>> INICIO DE FUNCION PARA CONTAR ASISTENCIA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+function contar_inasistencia($conexion, $id_silabo, $id_det_mat)
+{
+    $b_prog_act_sil = buscarProgActividadesSilaboByIdSilabo($conexion, $id_silabo);
+    $cont_inasistencia = 0;
+    while ($r_prog_act_sil = mysqli_fetch_array($b_prog_act_sil)) {
+        $id_prog_act_s = $r_prog_act_sil['id'];
+        $b_sesion_aprendizaje = buscarSesionAprendizajeByIdProgActividadesSilabo($conexion, $id_prog_act_s);
+        $r_b_sesion_apr = mysqli_fetch_array($b_sesion_aprendizaje);
+        $id_sesion_apr = $r_b_sesion_apr['id'];
+
+        $b_asistencia = buscarAsistenciaBySesionAndDetalleMatricula($conexion, $id_sesion_apr, $id_det_mat);
+        $r_b_asistencia = mysqli_fetch_array($b_asistencia);
+
+        if ($r_b_asistencia['asistencia'] == "F") {
+            $cont_inasistencia += 1;
+        }
+    }
+    return $cont_inasistencia;
+}
+//>>>>>>>>>>>>>>>>>>>>> FIN DE FUNCION PARA CONTAR ASISTENCIA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+// funciones para calificaciones --------------------------------------------------------
+
+//funcion para calcular promedio de los criterios de evaluacion
+function calc_criterios($conexion, $id_evaluacion)
+{
+    $b_criterio_evaluacion = buscarCriterioEvaluacionByEvaluacion($conexion, $id_evaluacion);
+    $suma_criterios = 0;
+    $cont_crit = 0;
+    while ($r_b_criterio_evaluacion = mysqli_fetch_array($b_criterio_evaluacion)) {
+        if (is_numeric($r_b_criterio_evaluacion['calificacion'])) {
+            $suma_criterios += $r_b_criterio_evaluacion['calificacion'];
+            $cont_crit += 1;
+            //$suma_criterios += (($r_b_criterio_evaluacion['ponderado']/100)*$r_b_criterio_evaluacion['calificacion']);
+        }
+    }
+    if ($cont_crit > 0) {
+        $suma_criterios = round($suma_criterios / $cont_crit);
+    } else {
+        $suma_criterios = round($suma_criterios);
+    }
+    return $suma_criterios;
+}
+
+//funcion para calcular la la evaluacion(criterio de evaluacion) por ponderado
+function calc_evaluacion($conexion, $id_calificacion)
+{
+    $suma_evaluacion = 0;
+
+    $b_evaluacion = buscarEvaluacionByIdCalificacion($conexion, $id_calificacion);
+    while ($r_b_evaluacion = mysqli_fetch_array($b_evaluacion)) {
+        $id_evaluacion = $r_b_evaluacion['id'];
+        //buscamos los criterios de evaluacion
+        $suma_criterios = calc_criterios($conexion, $id_evaluacion);
+
+        if (is_numeric($r_b_evaluacion['ponderado'])) {
+            $suma_evaluacion += ($r_b_evaluacion['ponderado'] / 100) * $suma_criterios;
+        }
+    }
+    return round($suma_evaluacion);
+}

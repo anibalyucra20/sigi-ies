@@ -44,8 +44,12 @@ if (!verificar_sesion($conexion)) {
 				</script>
 			";
     } else {
+
+        $turno = $_POST['turno'];
+        $seccion = $_POST['seccion'];
+
         $contar_reg_fallidos = 0;
-        $cont_reg_duplicado =0;
+        $cont_reg_duplicado = 0;
         $hoy = date("Y-m-d");
         if ($rb_periodo_act['fecha_fin'] >= $hoy) {
             $tipo_periodo = substr($rb_periodo_act['nombre'], 5);
@@ -78,7 +82,7 @@ if (!verificar_sesion($conexion)) {
                                 //echo "  - - - - " . $rb_uds['nombre'] . "<br>";
 
                                 // buscamos si esta programado la unidad didactica
-                                $busc_programacion_existe = buscarProgramacionByUd_Peridodo_ProgramaSede($conexion, $id_udd, $id_pe_sede, $id_periodo_act);
+                                $busc_programacion_existe = buscarProgramacionByUd_Peridodo_ProgramaSedeTurnoSeccion($conexion, $id_udd, $id_pe_sede, $id_periodo_act,$turno,$seccion);
                                 $conteo_b_programacion_existe = mysqli_num_rows($busc_programacion_existe);
 
                                 //si aun no se programó, se realiza la programacion
@@ -87,7 +91,7 @@ if (!verificar_sesion($conexion)) {
                                     switch ($tipo_periodo) {
                                         case 'I':
                                             if ($rb_semestre['descripcion'] == "I" || $rb_semestre['descripcion'] == "III" || $rb_semestre['descripcion'] == "V" || $rb_semestre['descripcion'] == "VII" || $rb_semestre['descripcion'] == "IX") {
-                                                $registro_programacion = realizar_programacion($conexion, $id_udd, $id_periodo_act, $id_pe_sede, $id_usuario, $cant_semanas);
+                                                $registro_programacion = realizar_programacion($conexion, $id_udd, $id_periodo_act, $id_pe_sede, $id_usuario, $cant_semanas,$turno,$seccion);
                                                 if ($registro_programacion == 0) {
                                                     $contar_reg_fallidos += 1;
                                                 }
@@ -95,7 +99,7 @@ if (!verificar_sesion($conexion)) {
                                             break;
                                         case 'II':
                                             if ($rb_semestre['descripcion'] == "II" || $rb_semestre['descripcion'] == "IV" || $rb_semestre['descripcion'] == "VI" || $rb_semestre['descripcion'] == "VIII" || $rb_semestre['descripcion'] == "X") {
-                                                $registro_programacion = realizar_programacion($conexion, $id_udd, $id_periodo_act, $id_pe_sede, $id_usuario, $cant_semanas);
+                                                $registro_programacion = realizar_programacion($conexion, $id_udd, $id_periodo_act, $id_pe_sede, $id_usuario, $cant_semanas,$turno,$seccion);
                                                 if ($registro_programacion == 0) {
                                                     $contar_reg_fallidos += 1;
                                                 }
@@ -107,7 +111,7 @@ if (!verificar_sesion($conexion)) {
                                     }
                                 } else {
                                     $contar_reg_fallidos += 1;
-                                    $cont_reg_duplicado +=1;
+                                    $cont_reg_duplicado += 1;
                                 }
                             }
                         }
@@ -117,7 +121,7 @@ if (!verificar_sesion($conexion)) {
 
             if ($contar_reg_fallidos > 0) {
                 echo "<script>
-                alert('Error al registrar Programación de " . $contar_reg_fallidos . " unidades didácticas de las cuales ".$cont_reg_duplicado." son unidades didácticas ya programadas');
+                alert('Error al registrar Programación de " . $contar_reg_fallidos . " unidades didácticas de las cuales " . $cont_reg_duplicado . " son unidades didácticas ya programadas');
                 window.location= '../programacion'
                     </script>
                 ";

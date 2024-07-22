@@ -21,6 +21,11 @@ function buscarUsuarioCoordinador_sede($conexion, $sede)
 	$sql = "SELECT * FROM sigi_usuarios WHERE id_rol=4 AND id_sede='$sede'";
 	return mysqli_query($conexion, $sql);
 }
+function buscarUsuarioCoordinador_sedeAndPe($conexion, $sede, $pe)
+{
+	$sql = "SELECT * FROM sigi_usuarios WHERE id_rol=4 AND id_sede='$sede' AND id_programa_estudios='$pe'";
+	return mysqli_query($conexion, $sql);
+}
 function buscarUsuarioDirector_All($conexion)
 {
 	$sql = "SELECT * FROM sigi_usuarios WHERE id_rol=1";
@@ -46,6 +51,8 @@ function buscarUsuarioDocentesOrderByApellidosNombresAndSede($conexion, $sede)
 	$sql = "SELECT * FROM sigi_usuarios WHERE id_rol<=5 AND id_sede='$sede' ORDER BY apellidos_nombres";
 	return mysqli_query($conexion, $sql);
 }
+
+
 function buscarUsuarioEstudiantesBySede($conexion, $sede)
 {
 	$sql = "SELECT * FROM sigi_usuarios WHERE id_rol=6 AND id_sede='$sede'";
@@ -56,7 +63,6 @@ function buscarUsuarioEstudiantesBySedePeriodo($conexion, $sede, $periodo)
 	$sql = "SELECT * FROM sigi_usuarios WHERE id_rol=6 AND id_sede='$sede' AND id_periodo_registro='$periodo'";
 	return mysqli_query($conexion, $sql);
 }
-
 function buscarEstudiantePeById_est($conexion, $id_usu)
 {
 	$sql = "SELECT * FROM acad_estudiante_programa WHERE id_usuario='$id_usu'";
@@ -351,6 +357,10 @@ function buscarProgramacionByUd_Peridodo_ProgramaSede($conexion, $unidad_didacti
 	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id_unidad_didactica='$unidad_didactica' AND id_periodo_academico='$periodo_actual' AND id_programa_sede='$programa_sede'";
 	return mysqli_query($conexion, $sql);
 }
+function buscarProgramacionByUd_Peridodo_ProgramaSedeTurnoSeccion($conexion, $unidad_didactica, $programa_sede, $periodo_actual,$turno,$seccion){
+	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id_unidad_didactica='$unidad_didactica' AND id_periodo_academico='$periodo_actual' AND id_programa_sede='$programa_sede' AND turno='$turno' AND seccion='$seccion'";
+	return mysqli_query($conexion, $sql);
+}
 function buscarProgramacionByDocente_Peridodo_ProgramaSede($conexion, $docente, $programa_sede, $periodo_actual){
 	$sql = "SELECT * FROM acad_programacion_unidad_didactica WHERE id_docente='$docente' AND id_periodo_academico='$periodo_actual' AND id_programa_sede='$programa_sede'";
 	return mysqli_query($conexion, $sql);
@@ -418,7 +428,11 @@ function buscarActividadEvaluacionByIdSesion($conexion, $id){
 
 
 // MATRICULAS
-
+function buscarMatriculaById($conexion, $id)
+{
+	$sql = "SELECT * FROM acad_matricula WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
 function buscarMatriculaByPeriodoSede($conexion, $periodo, $sede)
 {
 	$sql = "SELECT * FROM acad_matricula WHERE id_periodo_academico='$periodo' AND id_sede='$sede'";
@@ -431,8 +445,24 @@ function buscarMatriculaByEstPeriodoSede($conexion,$estudiante, $periodo, $sede)
 }
 
 // DETALLE DE MATRICULA
+function buscarDetalleMatriculaById($conexion, $id){
+	$sql = "SELECT * FROM acad_detalle_matricula WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarDetalleMatriculaByIdMatricula($conexion, $id_mat){
+	$sql = "SELECT * FROM acad_detalle_matricula WHERE id_matricula='$id_mat'";
+	return mysqli_query($conexion, $sql);
+}
 function buscarDetalleMatriculaByIdProgramacion($conexion, $id_prog){
 	$sql = "SELECT * FROM acad_detalle_matricula WHERE id_programacion_ud='$id_prog'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarDetalleMatriculaByIdProgramacionOrden($conexion, $id_prog){
+	$sql = "SELECT * FROM acad_detalle_matricula WHERE id_programacion_ud='$id_prog' ORDER BY orden ASC";
+	return mysqli_query($conexion, $sql);
+}
+function buscarDetalleMatriculaByIdMatriculaAndProgrmacion($conexion, $id_mat, $id_prog){
+	$sql = "SELECT * FROM acad_detalle_matricula WHERE id_matricula='$id_mat' AND id_programacion_ud='$id_prog'";
 	return mysqli_query($conexion, $sql);
 }
 
@@ -482,7 +512,11 @@ function buscarAsistenciaByIdSesion($conexion, $id_sesion){
 	$sql = "SELECT * FROM acad_asistencia WHERE id_sesion_aprendizaje='$id_sesion'";
 	return mysqli_query($conexion, $sql);
 }
-function buscarAsistenciaBySesionAndDetalleEstudiante($conexion, $id, $detalle_mat){
+function buscarAsistenciaByIdDetalleMatricula($conexion, $detalle_mat){
+	$sql = "SELECT * FROM acad_asistencia WHERE id_detalle_matricula='$detalle_mat'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarAsistenciaBySesionAndDetalleMatricula($conexion, $id, $detalle_mat){
 	$sql = "SELECT * FROM acad_asistencia WHERE id_sesion_aprendizaje='$id' AND id_detalle_matricula='$detalle_mat'";
 	return mysqli_query($conexion, $sql);
 }

@@ -41,9 +41,13 @@ if (!verificar_sesion($conexion)) {
     </center>";
     } else {
 
-        $id_docente_sesion = $rb_usuario['id'];
+        $id_mat = base64_decode($_GET['data']);
 
+        $b_mat = buscarMatriculaById($conexion, $id_mat);
+        $r_b_mat = mysqli_fetch_array($b_mat);
+        $id_est = $r_b_mat['id_estudiante'];
         $id_periodo_select = $_SESSION['acad_periodo'];
+
         $b_perido_act = buscarPeriodoAcadById($conexion, $id_periodo_select);
         $r_b_per_act = mysqli_fetch_array($b_perido_act);
         $fecha_actual = strtotime(date("d-m-Y"));
@@ -65,7 +69,7 @@ if (!verificar_sesion($conexion)) {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
 
-            <title>Matrículas<?php include("../include/header_title.php"); ?></title>
+            <title>Ver Matrícula <?php include("../include/header_title.php"); ?></title>
             <!--icono en el titulo-->
             <link rel="shortcut icon" href="../images/favicon.ico">
             <!-- Bootstrap -->
@@ -87,7 +91,16 @@ if (!verificar_sesion($conexion)) {
             <link href="../plantilla/Gentella/build/css/custom.min.css" rel="stylesheet">
             <!-- Script obtenido desde CDN jquery -->
             <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-
+            <script>
+                function confirmarEliminar() {
+                    var r = confirm("Estas Seguro Eliminar Registro?");
+                    if (r == true) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            </script>
         </head>
 
         <body class="nav-md">
@@ -106,11 +119,17 @@ if (!verificar_sesion($conexion)) {
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <div class="x_panel">
                                         <div class="">
-                                            <h2 align="center">Matrículas</h2>
+                                            <?php
+                                            $b_est = buscarUsuarioById($conexion, $id_est);
+                                            $r_b_est = mysqli_fetch_array($b_est);
+                                            ?>
+                                            <h2 align="center">Detalle de Matrícula - <?php echo $r_b_est['apellidos_nombres']; ?></h2>
                                             <?php if ($agregar) { ?>
-                                                <a href="registro_matricula" class="btn btn-success"><i class="fa fa-plus-square"></i> Nuevo</a>
+                                                <a title="Agregar Unidad Didáctica" class="btn btn-success" href="agregar_ud_matricula?data=<?php echo base64_encode($id_mat); ?>">Agregar Unidad Didáctica</a>
                                             <?php
                                             } ?>
+                                            <br>
+                                            <a href="matriculas" class="btn btn-danger">Regresar</a>
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="x_content">
@@ -119,13 +138,10 @@ if (!verificar_sesion($conexion)) {
                                             <table id="example" class="table table-striped table-bordered" style="width:100%">
                                                 <thead>
                                                     <tr>
-                                                        <th>Identificador</th>
-                                                        <th>DNI</th>
-                                                        <th>Estudiante</th>
+                                                        <th>Orden</th>
                                                         <th>Programa de Estudios</th>
                                                         <th>Semestre</th>
-                                                        <th>Turno</th>
-                                                        <th>Sección</th>
+                                                        <th>Unidad Didáctica</th>
                                                         <?php if ($agregar) {
                                                             echo '<th>Acciones</th>';
                                                         } ?>
@@ -134,60 +150,42 @@ if (!verificar_sesion($conexion)) {
                                                 <tbody>
                                                     <?php
                                                     $cont_table = 0;
-                                                    $ejec_busc_matricula = buscarMatriculaByPeriodoSede($conexion, $id_periodo_select, $id_sede_act);
+                                                    $ejec_busc_matricula = buscarMatriculaById($conexion, $id_mat);
                                                     while ($res_busc_matricula = mysqli_fetch_array($ejec_busc_matricula)) {
-                                                        $cont_table += 1;
+
+                                                        $b_detalle_matricula = buscarDetalleMatriculaByIdMatricula($conexion, $res_busc_matricula['id']);
+                                                        while ($r_b_det_mat = mysqli_fetch_array($b_detalle_matricula)) {
+                                                            $cont_table += 1;
+
+                                                            $b_prog = buscarProgramacionUDById($conexion, $r_b_det_mat['id_programacion_ud']);
+                                                            $r_b_prog = mysqli_fetch_array($b_prog);
+
+                                                            $b_ud = buscarUnidadDidacticaById($conexion, $r_b_prog['id_unidad_didactica']);
+                                                            $r_b_ud = mysqli_fetch_array($b_ud);
                                                     ?>
-                                                        <tr>
-                                                            <td><?php echo $cont_table; ?></td>
-                                                            <?php
-                                                            $id_estudiante = $res_busc_matricula['id_estudiante'];
-                                                            $b_estu = buscarUsuarioById($conexion, $id_estudiante);
-                                                            $res_b_estudiante = mysqli_fetch_array($b_estu);
+                                                            <tr>
+                                                                <td><?php echo $cont_table; ?></td>
+                                                                <?php
+                                                                $busc_semestre = buscarSemestreById($conexion, $r_b_ud['id_semestre']);
+                                                                $res_b_semestre = mysqli_fetch_array($busc_semestre);
 
-                                                            $id_programa_estudio = $res_busc_matricula['id_programa_estudio'];
-                                                            $id_semestre = $res_busc_matricula['id_semestre'];
+                                                                $busc_mf = buscarModuloFormativoById($conexion, $res_b_semestre['id_modulo_formativo']);
+                                                                $res_busc_mf = mysqli_fetch_array($busc_mf);
 
-                                                            $busc_semestre = buscarSemestreById($conexion, $id_semestre);
-                                                            $res_b_semestre = mysqli_fetch_array($busc_semestre);
-
-                                                            $ejec_busc_carrera = buscarProgramaEstudioById($conexion, $id_programa_estudio);
-                                                            $res_busc_carrera = mysqli_fetch_array($ejec_busc_carrera);
-                                                            ?>
-                                                            <td><?php echo $res_b_estudiante['dni']; ?></td>
-                                                            <td><?php echo $res_b_estudiante['apellidos_nombres']; ?></td>
-                                                            <td><?php echo $res_busc_carrera['nombre']; ?></td>
-                                                            <?php
-                                                            switch ($res_busc_matricula['turno']) {
-                                                                case 'M':
-                                                                    $turno = 'MAÑANA';
-                                                                    break;
-                                                                case 'T':
-                                                                    $turno = 'TARDE';
-                                                                    break;
-                                                                case 'N':
-                                                                    $turno = 'NOCHE';
-                                                                    break;
-                                                                default:
-                                                                    $turno = '';
-                                                                    break;
-                                                            }
-                                                            ?>
-                                                            <td><?php echo $res_b_semestre['descripcion']; ?></td>
-                                                            <td><?php echo $turno; ?></td>
-                                                            <td><?php echo $res_busc_matricula['seccion']; ?></td>
-                                                            <?php if ($agregar) {
-                                                                echo '<td>
-                            <a class="btn btn-success" href="ver_matricula?data=' . base64_encode($res_busc_matricula['id']) . '"><i class="fa fa-pencil-square-o"></i> </a>
-                          </td>';
-                                                            } ?>
-
-
-                                                        </tr>
+                                                                $ejec_busc_carrera = buscarProgramaEstudioById($conexion, $res_busc_mf['id_programa_estudio']);
+                                                                $res_busc_carrera = mysqli_fetch_array($ejec_busc_carrera);
+                                                                ?>
+                                                                <td><?php echo $res_busc_carrera['nombre']; ?></td>
+                                                                <td><?php echo $res_b_semestre['descripcion']; ?></td>
+                                                                <td><?php echo $r_b_ud['nombre']; ?></td>
+                                                                <?php if ($agregar) { ?>
+                                                                    <td><a title="Eliminar" class="btn btn-danger" href="operaciones/eliminar_ud_matricula?data=<?php echo base64_encode($r_b_det_mat['id']); ?>" onclick="return confirmarEliminar();">Eliminar</a></td>
+                                                                <?php } ?>
+                                                            </tr>
                                                     <?php
+                                                        };
                                                     };
                                                     ?>
-
                                                 </tbody>
                                             </table>
 

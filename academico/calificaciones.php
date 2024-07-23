@@ -162,7 +162,7 @@ if (!verificar_sesion($conexion)) {
                                                         <input type="hidden" name="data" value="<?php echo $id_prog; ?>">
                                                         <button type="submit" class="btn btn-warning">Reporte Registra</button>
                                                     </form>
-                                                    <a href="unidades_didacticas" class="btn btn-danger">Regresar</a>
+                                                    <a href="javascript: history.go(-1)" class="btn btn-danger">Regresar</a>
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <div class="x_content">
@@ -378,7 +378,7 @@ if (!verificar_sesion($conexion)) {
                                                         <div align="center">
                                                             <br>
                                                             <br>
-                                                            <a href="unidades_didacticas" class="btn btn-danger">Regresar</a>
+                                                            <a href="javascript: history.go(-1)" class="btn btn-danger">Regresar</a>
                                                             <?php if ($editar_doc) { ?>
                                                                 <button type="submit" class="btn btn-success">Guardar</button>
                                                             <?php } ?>

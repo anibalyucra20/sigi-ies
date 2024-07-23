@@ -47,7 +47,6 @@
                     </li>
                     <li><a><i class="fa fa-book"></i> Reportes <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="reporte_matriculas">Reporte de Matrículas</a></li>
                             <li class="sub_menu"><a href="reportes_coordinador">Reportes de Coordinador</a></li>
                         </ul>
                     </li>

@@ -34,6 +34,9 @@ if (!verificar_sesion($conexion)) {
     $b_sede_act = buscarSedeById($conexion, $id_sede_act);
     $rb_sede_act = mysqli_fetch_array($b_sede_act);
 
+    $b_programa_sede = buscarProgramaEstudioSedeByIdSedePe($conexion, $id_sede_act, $rb_usuario['id_programa_estudios']);
+    $rb_programa_sede = mysqli_fetch_array($b_programa_sede);
+
     if ($contar_permiso == 0 || $rb_usuario['estado'] == 0) {
         echo "<center><h1>PERMISOS NO SUFICIENTES PARA ACCEDER A LA PÁGINA SOLICITADA</h1><br>
     <a href='../academico/'>Regresar</a><br>
@@ -52,7 +55,7 @@ if (!verificar_sesion($conexion)) {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
 
-            <title>unidades didácticas<?php include("../include/header_title.php"); ?></title>
+            <title>unidades didácticas PE<?php include("../include/header_title.php"); ?></title>
             <!--icono en el titulo-->
             <link rel="shortcut icon" href="../images/favicon.ico">
             <!-- Bootstrap -->
@@ -63,12 +66,13 @@ if (!verificar_sesion($conexion)) {
             <link href="../plantilla/Gentella/vendors/nprogress/nprogress.css" rel="stylesheet">
             <!-- iCheck -->
             <link href="../plantilla/Gentella/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-            <!-- bootstrap-progressbar -->
-            <link href="../plantilla/Gentella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-            <!-- JQVMap -->
-            <link href="../plantilla/Gentella/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
-            <!-- bootstrap-daterangepicker -->
-            <link href="../plantilla/Gentella/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+            <!-- Datatables -->
+            <link href="../plantilla/Gentella/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+            <link href="../plantilla/Gentella/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+            <link href="../plantilla/Gentella/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+            <link href="../plantilla/Gentella/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+            <link href="../plantilla/Gentella/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
             <!-- Custom Theme Style -->
             <link href="../plantilla/Gentella/build/css/custom.min.css" rel="stylesheet">
             <!-- Script obtenido desde CDN jquery -->
@@ -81,7 +85,11 @@ if (!verificar_sesion($conexion)) {
                 <div class="main_container">
                     <!--menu-->
                     <?php
+
+
+
                     include("include/menu_docente.php");
+
                     ?>
 
                     <!-- page content -->
@@ -93,7 +101,7 @@ if (!verificar_sesion($conexion)) {
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="x_panel">
                                     <div class="">
-                                        <h2 align="center">Unidades Didácticas</h2>
+                                        <h2 align="center">Unidades Didácticas por Programa de Estudios</h2>
 
                                         <div class="clearfix"></div>
                                     </div>
@@ -104,33 +112,30 @@ if (!verificar_sesion($conexion)) {
                                             <thead>
                                                 <tr>
                                                     <th>Nro</th>
+                                                    <th>Unidad Didactica</th>
                                                     <th>Programa de Estudios</th>
                                                     <th>Semestre</th>
-                                                    <th>Unidad Didactica</th>
                                                     <th>Docente</th>
-                                                    <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                $b_pe = buscarProgramaEstudio($conexion);
-                                                while ($rb_pe = mysqli_fetch_array($b_pe)) {
-                                                    $id_pe = $rb_pe['id'];
-                                                    $b_pe_sede = buscarProgramaEstudioSedeByIdSedePe($conexion, $id_sede_act, $id_pe);
-                                                    $rb_pe_sede = mysqli_fetch_array($b_pe_sede);
-                                                    $id_pe_sede = $rb_pe_sede['id'];
+                                                $ejec_busc_prog = buscarProgramacionUDByPeriodoSede($conexion, $id_periodo_act, $rb_programa_sede['id']);
+                                                $contador = 0;
+                                                while ($res_busc_prog = mysqli_fetch_array($ejec_busc_prog)) {
 
-                                                    $ejec_busc_prog = buscarProgramacionByDocente_Peridodo_ProgramaSede($conexion, $id_usuario, $id_pe_sede, $id_periodo_act);
-                                                    $contador = 0;
-                                                    while ($res_busc_prog = mysqli_fetch_array($ejec_busc_prog)) {
-                                                        $data = base64_encode($res_busc_prog['id']);
+                                                    $id_ud = $res_busc_prog['id_unidad_didactica'];
+                                                    $b_ud = buscarUnidadDidacticaById($conexion, $id_ud);
+                                                    $res_b_ud = mysqli_fetch_array($b_ud);
+                                                    $id_pe_udd = $res_b_ud['id_programa_estudio'];
+                                                    if ($id_pe_udd != $id_pee) {
+                                                    } else {
                                                         $contador++;
-                                                        $id_ud = $res_busc_prog['id_unidad_didactica'];
-                                                        $b_ud = buscarUnidadDidacticaById($conexion, $id_ud);
-                                                        $res_b_ud = mysqli_fetch_array($b_ud);
+
                                                 ?>
                                                         <tr>
                                                             <td><?php echo $contador; ?></td>
+                                                            <td><?php echo $res_b_ud['nombre']; ?></td>
                                                             <?php
                                                             $id_semestre = $res_b_ud['id_semestre'];
                                                             $ejec_busc_semestre = buscarSemestreById($conexion, $id_semestre);
@@ -144,26 +149,20 @@ if (!verificar_sesion($conexion)) {
                                                             $res_busc_carrera = mysqli_fetch_array($ejec_busc_carrera);
                                                             ?>
                                                             <td><?php echo $res_busc_carrera['nombre']; ?></td>
+                                                            <?php
 
+                                                            ?>
                                                             <td><?php echo $res_busc_semestre['descripcion']; ?></td>
                                                             <?php
                                                             $ejec_busc_docente = buscarUsuarioById($conexion, $res_busc_prog['id_docente']);
                                                             $res_busc_docente = mysqli_fetch_array($ejec_busc_docente);
                                                             ?>
-                                                            <td><?php echo $res_b_ud['nombre']; ?></td>
                                                             <td><?php echo $res_busc_docente['apellidos_nombres']; ?></td>
-                                                            <td>
-                                                                <a title="Sílabos" class="btn btn-warning" href="silabos?data=<?php echo $data; ?>"><i class="fa fa-book"></i></a>
-                                                                <a title="Sesiones de Aprendizaje" class="btn btn-primary" href="sesiones?data=<?php echo $data; ?>"><i class="fa fa-briefcase"></i></a>
-                                                                <a title="Asistencia" class="btn btn-success" href="asistencias?data=<?php echo $data; ?>"><i class="fa fa-group"></i></a>
-                                                                <a title="Calificaciones" class="btn btn-info" href="calificaciones?data=<?php echo $data; ?>"><i class="fa fa-pencil-square-o"></i></a>
-                                                                <a title="Caratula" class="btn btn-default" target="_blank" href="imprimir_caratula?data=<?php echo $data; ?>"><i class="fa fa-file-pdf-o"></i></a>
-                                                                <a title="Informe Final" class="btn btn-danger" href="informe_final?data=<?php echo $data; ?>"><i class="fa fa-bar-chart"></i></a>
-                                                            </td>
+
                                                         </tr>
                                                 <?php
                                                     }
-                                                }
+                                                };
                                                 ?>
 
                                             </tbody>

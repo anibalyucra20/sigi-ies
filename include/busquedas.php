@@ -444,6 +444,18 @@ function buscarMatriculaByEstPeriodoSede($conexion,$estudiante, $periodo, $sede)
 	return mysqli_query($conexion, $sql);
 }
 
+//LICENCIAS 
+
+function buscarMatriculaByIdPeriodoSinLicencia($conexion, $id_periodo_acad, $sede){
+	$sql = "SELECT * FROM acad_matricula WHERE id_periodo_academico='$id_periodo_acad'AND id_sede='$sede' AND licencia =''";
+	return mysqli_query($conexion, $sql);
+}
+function buscarLicenciaPeriodo($conexion, $id_periodo_acad, $sede){
+	$sql = "SELECT * FROM acad_matricula WHERE id_periodo_academico = '$id_periodo_acad' AND id_sede='$sede' AND licencia !=''";
+	return mysqli_query($conexion, $sql);
+}
+
+
 // DETALLE DE MATRICULA
 function buscarDetalleMatriculaById($conexion, $id){
 	$sql = "SELECT * FROM acad_detalle_matricula WHERE id='$id'";
@@ -465,6 +477,7 @@ function buscarDetalleMatriculaByIdMatriculaAndProgrmacion($conexion, $id_mat, $
 	$sql = "SELECT * FROM acad_detalle_matricula WHERE id_matricula='$id_mat' AND id_programacion_ud='$id_prog'";
 	return mysqli_query($conexion, $sql);
 }
+
 
 // CALIFICACIONES
 

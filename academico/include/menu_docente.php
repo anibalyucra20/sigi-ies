@@ -37,13 +37,7 @@
                     <li><a><i class="fa fa-pencil-square-o"></i> Unidades Didácticas <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li class="sub_menu"><a href="unidades_didacticas">Mis Unidades Didácticas</a></li>
-                            <li class="sub_menu"><a href="pe_calificaciones_unidades_didacticas">Todas las Unidades Didácticas</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-graduation-cap"></i> Tutoría <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="tutoria_programacion">Programación de Tutoría</a></li>
-                            <li class="sub_menu"><a href="tutoria">Mi tutoría</a></li>
+                            <li class="sub_menu"><a href="pe_unidades_didacticas">Todas las Unidades Didácticas</a></li>
                         </ul>
                     </li>
                     <li><a><i class="fa fa-book"></i> Evaluación <span class="fa fa-chevron-down"></span></a>

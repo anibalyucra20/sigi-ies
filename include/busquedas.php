@@ -661,3 +661,58 @@ function buscarTutoriaSesGrupalByIdAndIdTutoria($conexion, $id, $id_tutoria)
 	$sql = "SELECT * FROM tutoria_sesion_grupal WHERE id='$id' AND id_tutoria='$id_tutoria'";
 	return mysqli_query($conexion, $sql);
 }
+
+
+
+
+// --------------------------------------------------------- SISTEMA TUTORIA ------------------------------------------------------
+
+
+//-------------------------LIBROS------------------------------
+function buscar_libro($conexion){
+    $sql = "SELECT * FROM biblioteca_libros";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_libroById($conexion, $id){
+    $sql = "SELECT * FROM biblioteca_libros WHERE id='$id'";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_libroByIdPE($conexion, $id_pe){
+    $sql = "SELECT * FROM biblioteca_libros WHERE id_programa_estudio='$id_pe'";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_libroByLinkPortada($conexion, $link){
+    $sql = "SELECT * FROM biblioteca_libros WHERE link_portada = '$link'";
+    return 
+    mysqli_query($conexion, $sql);
+}
+
+
+//-------------------------LECTURAS------------------------------
+function buscar_lecturas($conexion){
+    $sql = "SELECT * FROM biblioteca_lecturas ";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_lecturasByidLibroUsuTipo($conexion, $id_libro, $usuario, $tipo_usu){
+    $sql = "SELECT * FROM biblioteca_lecturas WHERE id_libro='$id_libro' AND id_usuario='$usuario' AND tipo_usuario='$tipo_usu'";
+    return mysqli_query($conexion, $sql);
+}
+
+function buscar_4lecturas_invert($conexion, $id_usuario, $tipo_usuario){
+    $sql = "SELECT * FROM biblioteca_lecturas WHERE id_usuario = '$id_usuario' AND tipo_usuario = '$tipo_usuario' ORDER BY id DESC LIMIT 4";
+    return mysqli_query($conexion, $sql);
+}
+
+//-------------------------FAVORITOS------------------------------
+function buscar_favoritosByidLibroUsuTipo($conexion, $id_libro, $usuario, $tipo_usu){
+    $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_libro='$id_libro' AND id_usuario='$usuario' AND tipo_usuario='$tipo_usu'";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_4ultimos_favoritos($conexion, $id_usuario, $tipo_usuario){
+    $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_usuario = '$id_usuario' AND tipo_usuario = '$tipo_usuario' ORDER BY id DESC LIMIT 4";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_favoritos($conexion, $id_usuario, $tipo_usuario){
+    $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_usuario = '$id_usuario' AND tipo_usuario = '$tipo_usuario' ORDER BY id DESC";
+    return mysqli_query($conexion, $sql);
+}

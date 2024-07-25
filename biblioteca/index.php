@@ -5,7 +5,7 @@ include("../include/funciones.php");
 include("../include/verificar_sesion_biblioteca.php");
 
 if (!verificar_sesion($conexion)) {
-    $sistema = base64_encode('S_BIBLIOTECA');
+    $sistema = base64_encode('S_BIBLIO');
 
     echo "<script>
                   window.location.replace('../passport/index?data=" . $sistema . "');
@@ -19,7 +19,7 @@ if (!verificar_sesion($conexion)) {
     $rb_usuario = mysqli_fetch_array($b_usuario);
     $id_usuario = $rb_usuario['id'];
 
-    $b_sistema = buscarSistemaByCodigo($conexion, 'S_BIBLIOTECA');
+    $b_sistema = buscarSistemaByCodigo($conexion, 'S_BIBLIO');
     $rb_sistema = mysqli_fetch_array($b_sistema);
     $id_sistema = $rb_sistema['id'];
 
@@ -39,7 +39,7 @@ if (!verificar_sesion($conexion)) {
 
         <head>
             <meta charset="utf-8" />
-            <title>Biblioteca - IESTP HUANTA</title>
+            <title>Biblioteca <?php include("../include/header_title.php"); ?></title>
             <?php include "include/header.php"; ?>
         </head>
 
@@ -66,13 +66,13 @@ if (!verificar_sesion($conexion)) {
                                     $b_libro = buscar_libroById($conexion, $r_b_lecturas['id_libro']);
                                     $r_b_libro = mysqli_fetch_array($b_libro);
 
-                                    $b_programa = buscarCarrerasById($conexion_sispa, $r_b_libro['id_programa_estudio']);
+                                    $b_programa = buscarProgramaEstudioById($conexion_sispa, $r_b_libro['id_programa_estudio']);
                                     $r_b_programa = mysqli_fetch_array($b_programa);
 
                                     $b_semestre = buscarSemestreById($conexion_sispa, $r_b_libro['id_semestre']);
                                     $r_b_semestre = mysqli_fetch_array($b_semestre);
 
-                                    $b_ud = buscarUdById($conexion_sispa, $r_b_libro['id_unidad_didactica']);
+                                    $b_ud = buscarUnidadDidacticaById($conexion_sispa, $r_b_libro['id_unidad_didactica']);
                                     $r_b_ud = mysqli_fetch_array($b_ud);
                                 ?>
                                     <div class="card col-lg-3 col-md-3 col-sm-6 mb-2">
@@ -105,13 +105,13 @@ if (!verificar_sesion($conexion)) {
                                     $b_libro = buscar_libroById($conexion, $r_b_favoritos['id_libro']);
                                     $r_b_libro = mysqli_fetch_array($b_libro);
 
-                                    $b_programa = buscarCarrerasById($conexion_sispa, $r_b_libro['id_programa_estudio']);
+                                    $b_programa = buscarProgramaEstudioById($conexion_sispa, $r_b_libro['id_programa_estudio']);
                                     $r_b_programa = mysqli_fetch_array($b_programa);
 
                                     $b_semestre = buscarSemestreById($conexion_sispa, $r_b_libro['id_semestre']);
                                     $r_b_semestre = mysqli_fetch_array($b_semestre);
 
-                                    $b_ud = buscarUdById($conexion_sispa, $r_b_libro['id_unidad_didactica']);
+                                    $b_ud = buscarUnidadDidacticaById($conexion_sispa, $r_b_libro['id_unidad_didactica']);
                                     $r_b_ud = mysqli_fetch_array($b_ud);
                                 ?>
                                     <div class="card col-lg-3 col-md-3 col-sm-6 mb-2">

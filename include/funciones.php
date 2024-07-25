@@ -97,7 +97,7 @@ function obtener_titulo_sistema($data)
         case 'S_TUTORIA':
             $nombre = "SIGI - Tutoría";
             break;
-        case 'S_BIBLIOTECA':
+        case 'S_BIBLIO':
             $nombre = "SIGI - Biblioteca";
             break;
         case 'S_ADMISION':

@@ -74,7 +74,7 @@ if (in_array($sistema, $sistemas)) {
 								$_SESSION['tutoria_sede'] = $id_sede;
 								echo "<script> window.location.replace('../tutoria/'); </script>";
 								break;
-							case 'S_BIBLIOTECA':
+							case 'S_BIBLIO':
 								//se genera las variables de sesion
 								$_SESSION['biblioteca_id_sesion'] = $id_sesion;
 								$_SESSION['biblioteca_periodo'] = $presente_periodo;

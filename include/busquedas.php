@@ -21,7 +21,8 @@ function buscarUsuarioByNomAp($conexion, $nomap)
 	$sql = "SELECT * FROM sigi_usuarios WHERE apellidos_nombres='$nomap'";
 	return mysqli_query($conexion, $sql);
 }
-function buscarUsuarioByApellidosNombres_like($conexion,$dato){
+function buscarUsuarioByApellidosNombres_like($conexion, $dato)
+{
 	$sql = "SELECT * FROM sigi_usuarios WHERE apellidos_nombres LIKE '%$dato%'";
 	return mysqli_query($conexion, $sql);
 }
@@ -462,6 +463,11 @@ function buscarMatriculaByPeriodoSede($conexion, $periodo, $sede)
 	$sql = "SELECT * FROM acad_matricula WHERE id_periodo_academico='$periodo' AND id_sede='$sede'";
 	return mysqli_query($conexion, $sql);
 }
+function buscarMatriculaByPeriodoSedeTurnoSeccion($conexion, $periodo, $sede, $pe, $turno, $seccion)
+{
+	$sql = "SELECT * FROM acad_matricula WHERE id_periodo_academico='$periodo' AND id_sede='$sede' AND id_programa_estudio='$pe' AND turno='$turno' AND seccion='$seccion'";
+	return mysqli_query($conexion, $sql);
+}
 function buscarMatriculaByEstPeriodoSede($conexion, $estudiante, $periodo, $sede)
 {
 	$sql = "SELECT * FROM acad_matricula WHERE id_periodo_academico='$periodo' AND id_sede='$sede' AND id_estudiante='$estudiante'";
@@ -578,5 +584,80 @@ function buscarAsistenciaByIdDetalleMatricula($conexion, $detalle_mat)
 function buscarAsistenciaBySesionAndDetalleMatricula($conexion, $id, $detalle_mat)
 {
 	$sql = "SELECT * FROM acad_asistencia WHERE id_sesion_aprendizaje='$id' AND id_detalle_matricula='$detalle_mat'";
+	return mysqli_query($conexion, $sql);
+}
+
+
+
+
+
+
+
+// --------------------------------------------------------- SISTEMA TUTORIA ------------------------------------------------------
+
+////TUTORIA
+function buscarTutoriaByIdDocenteAndIdPeriodoSede($conexion, $id_docente, $id_periodo_acad, $sede)
+{
+	$sql = "SELECT * FROM tutoria_programacion WHERE id_docente='$id_docente' AND id_periodo_academico='$id_periodo_acad' AND id_sede='$sede'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaByIdAndIdPeriodo($conexion, $id, $id_periodo_acad)
+{
+	$sql = "SELECT * FROM tutoria_programacion WHERE id='$id' AND id_periodo_academico='$id_periodo_acad'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaById($conexion, $id)
+{
+	$sql = "SELECT * FROM tutoria_programacion WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaEstudiantesById($conexion, $id)
+{
+	$sql = "SELECT * FROM tutoria_estudiantes WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaEstudiantesByIdTutoria($conexion, $id_tutoria)
+{
+	$sql = "SELECT * FROM tutoria_estudiantes WHERE id_programacion_tutoria='$id_tutoria'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoria_EstudianteByIdEstudiante($conexion, $id_estudiante)
+{
+	$sql = "SELECT * FROM tutoria_estudiantes WHERE id_estudiante='$id_estudiante'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaEstudiantesByIdTutoriaAndIdEst($conexion, $id_tutoria, $id_estudiante)
+{
+	$sql = "SELECT * FROM tutoria_estudiantes WHERE id_programacion_tutoria='$id_tutoria' AND id_estudiante='$id_estudiante'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaRecojoInfoByIdTutEst($conexion, $id_tut_est)
+{
+	$sql = "SELECT * FROM tutoria_recojo_informacion WHERE id_tutoria_estudiante='$id_tut_est'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaSesIndivById($conexion, $id)
+{
+	$sql = "SELECT * FROM tutoria_sesion_individual WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaSesIndivByIdTutEst($conexion, $id_tut_est)
+{
+	$sql = "SELECT * FROM tutoria_sesion_individual WHERE id_tutoria_estudiante='$id_tut_est'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaSesGrupalById($conexion, $id)
+{
+	$sql = "SELECT * FROM tutoria_sesion_grupal WHERE id='$id'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaSesGrupalByIdTutoria($conexion, $id_tutoria)
+{
+	$sql = "SELECT * FROM tutoria_sesion_grupal WHERE id_tutoria='$id_tutoria'";
+	return mysqli_query($conexion, $sql);
+}
+function buscarTutoriaSesGrupalByIdAndIdTutoria($conexion, $id, $id_tutoria)
+{
+	$sql = "SELECT * FROM tutoria_sesion_grupal WHERE id='$id' AND id_tutoria='$id_tutoria'";
 	return mysqli_query($conexion, $sql);
 }

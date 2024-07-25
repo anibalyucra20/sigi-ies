@@ -66,6 +66,22 @@ if (in_array($sistema, $sistemas)) {
 								$_SESSION['acad_sede'] = $id_sede;
 								echo "<script> window.location.replace('../academico/'); </script>";
 								break;
+							case 'S_TUTORIA':
+								//se genera las variables de sesion
+								$_SESSION['tutoria_id_sesion'] = $id_sesion;
+								$_SESSION['tutoria_periodo'] = $presente_periodo;
+								$_SESSION['tutoria_token'] = $token;
+								$_SESSION['tutoria_sede'] = $id_sede;
+								echo "<script> window.location.replace('../tutoria/'); </script>";
+								break;
+							case 'S_BIBLIOTECA':
+								//se genera las variables de sesion
+								$_SESSION['biblioteca_id_sesion'] = $id_sesion;
+								$_SESSION['biblioteca_periodo'] = $presente_periodo;
+								$_SESSION['biblioteca_token'] = $token;
+								$_SESSION['biblioteca_sede'] = $id_sede;
+								echo "<script> window.location.replace('../biblioteca/'); </script>";
+								break;
 							case 'S_ADMISION':
 								//se genera las variables de sesion
 								$_SESSION['admision_id_sesion'] = $id_sesion;

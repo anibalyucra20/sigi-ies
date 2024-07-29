@@ -84,7 +84,7 @@ if (!verificar_sesion($conexion)) {
                                                     <br>
                                                     <a href="libros" class="btn btn-danger">Regresar</a>
                                                 </div>
-                                                <form role="form" action="operaciones/actualizar_libro.php" method="POST" enctype="multipart/form-data">
+                                                <form role="form" action="operaciones/actualizar_libro" method="POST" enctype="multipart/form-data">
                                                     <input type="hidden" name="data" id="libro_m" value="<?php echo $r_b_libro['id']; ?>">
                                                     <input type="hidden" name="ud" id="id_ud_m" value="<?php echo $r_b_libro['id_unidad_didactica']; ?>">
                                                     <input type="hidden" name="paginas" value="<?php echo $r_b_libro['paginas']; ?>">
@@ -150,7 +150,7 @@ if (!verificar_sesion($conexion)) {
                                                         </div>
                                                         <div class="col-md-12 mb-3">
                                                             <label>Editorial :</label>
-                                                            <input type="text" class="form-control" name="editorial" required value="<?php echo $r_b_libro['editorial']; ?>" placeholder="Opcional">
+                                                            <input type="text" class="form-control" name="editorial" value="<?php echo $r_b_libro['editorial']; ?>" placeholder="Opcional">
                                                         </div>
                                                         <div class="col-md-6 mb-3">
                                                             <label>Año de Edicion :</label>
@@ -189,33 +189,23 @@ if (!verificar_sesion($conexion)) {
                                             <!--end card body-->
                                         </div><!-- end card-->
                                     </div> <!-- end col-->
-
                                 </div>
                                 <!-- end page title -->
-
-
                             </div> <!-- container-fluid -->
                         </div>
                         <!-- End Page-content -->
-
                         <?php include "../include/footer.php"; ?>
-
                     </div>
                     <!-- end main content-->
-
                 </div>
                 <!-- END layout-wrapper -->
-
                 <!-- jQuery  -->
                 <script src="../plantilla/biblioteca/assets/js/jquery.min.js"></script>
                 <script src="../plantilla/biblioteca/assets/js/bootstrap.bundle.min.js"></script>
                 <script src="../plantilla/biblioteca/assets/js/waves.js"></script>
                 <script src="../plantilla/biblioteca/assets/js/simplebar.min.js"></script>
-
                 <script src="../plantilla/biblioteca/assets/pages/validation-demo.js"></script>
-
                 <script src="../plantilla/biblioteca/plugins/dropify/dropify.min.js"></script>
-
                 <!-- Init js-->
                 <script src="../plantilla/biblioteca/assets/pages/fileuploads-demo.js"></script>
                 <!-- App js -->
@@ -228,7 +218,6 @@ if (!verificar_sesion($conexion)) {
                         $('#id_semestre_m').change(function() {
                             recargar_ud();
                         });
-
                     })
                 </script>
                 <script type="text/javascript">

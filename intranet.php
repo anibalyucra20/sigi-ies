@@ -71,7 +71,7 @@ $rb_datos_iest = mysqli_fetch_array($datos_institucion);
                                 <div class="x_content">
                                     <div class="">
                                         <div class="pricing_features">
-                                            <img src="https://iestphuanta.edu.pe/wp-content/uploads/2024/05/logo_tecno-1.png" alt="" width="100%" height="100%">
+                                            <img src="images/logo.png" alt="" width="100%" height="100%">
                                         </div>
                                     </div>
                                     <div class="pricing_footer">
@@ -95,7 +95,7 @@ $rb_datos_iest = mysqli_fetch_array($datos_institucion);
                                 <div class="x_content">
                                     <div class="">
                                         <div class="pricing_features">
-                                            <img src="https://iestphuanta.edu.pe/wp-content/uploads/2024/05/logo_tecno-1.png" alt="" width="100%" height="100%">
+                                            <img src="images/logo.png" alt="" width="100%" height="100%">
                                         </div>
                                     </div>
                                     <div class="pricing_footer">
@@ -120,7 +120,7 @@ $rb_datos_iest = mysqli_fetch_array($datos_institucion);
                                 <div class="x_content">
                                     <div class="">
                                         <div class="pricing_features">
-                                            <img src="https://iestphuanta.edu.pe/wp-content/uploads/2024/05/logo_tecno-1.png" alt="" width="100%" height="100%">
+                                            <img src="images/logo.png" alt="" width="100%" height="100%">
                                         </div>
                                     </div>
                                     <div class="pricing_footer">
@@ -145,7 +145,7 @@ $rb_datos_iest = mysqli_fetch_array($datos_institucion);
                                 <div class="x_content">
                                     <div class="">
                                         <div class="pricing_features">
-                                            <img src="https://iestphuanta.edu.pe/wp-content/uploads/2024/05/logo_tecno-1.png" alt="" width="100%" height="100%">
+                                            <img src="images/logo.png" alt="" width="100%" height="100%">
                                         </div>
                                     </div>
                                     <div class="pricing_footer">
@@ -169,7 +169,7 @@ $rb_datos_iest = mysqli_fetch_array($datos_institucion);
                                 <div class="x_content">
                                     <div class="">
                                         <div class="pricing_features">
-                                            <img src="https://iestphuanta.edu.pe/wp-content/uploads/2024/05/logo_tecno-1.png" alt="" width="100%" height="100%">
+                                            <img src="images/logo.png" alt="" width="100%" height="100%">
                                         </div>
                                     </div>
                                     <div class="pricing_footer">
@@ -191,7 +191,7 @@ $rb_datos_iest = mysqli_fetch_array($datos_institucion);
                                 <div class="x_content">
                                     <div class="">
                                         <div class="pricing_features">
-                                            <img src="https://iestphuanta.edu.pe/wp-content/uploads/2024/05/logo_tecno-1.png" alt="" width="100%" height="100%">
+                                            <img src="images/logo.png" alt="" width="100%" height="100%">
                                         </div>
                                     </div>
                                     <div class="pricing_footer">

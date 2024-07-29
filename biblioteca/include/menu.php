@@ -55,7 +55,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="biblioteca">
+                        <a class="nav-link" href="busqueda">
                             <i class="fas fa-book"></i>Biblioteca
                         </a>
                     </li>

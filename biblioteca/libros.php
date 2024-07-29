@@ -122,8 +122,7 @@ if (!verificar_sesion($conexion)) {
                                                                     ?></td>
                                                                 <td>
                                                                     <a href="editar_libro?data=<?php echo base64_encode($r_b_libro['id']); ?>" class="btn btn-success">Editar</a>
-
-                                                                    <button type="button" class="btn btn-primary">Ver</button>
+                                                                    <a href="ver_libro?data=<?php echo base64_encode($r_b_libro['id']); ?>" class="btn btn-primary">Ver</a>
                                                                 </td>
                                                             </tr>
                                                         <?php } ?>

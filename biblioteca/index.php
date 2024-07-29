@@ -71,7 +71,7 @@ if (!verificar_sesion($conexion)) {
 
                                     $b_semestre = buscarSemestreById($conexion_sispa, $r_b_libro['id_semestre']);
                                     $r_b_semestre = mysqli_fetch_array($b_semestre);
-
+ 
                                     $b_ud = buscarUnidadDidacticaById($conexion_sispa, $r_b_libro['id_unidad_didactica']);
                                     $r_b_ud = mysqli_fetch_array($b_ud);
                                 ?>

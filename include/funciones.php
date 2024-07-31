@@ -11,13 +11,13 @@ function generate_string($input, $strength)
 }
 function generar_llave()
 {
-    $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/}{[]@#$%&*()\|';
+    $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/}{[]@#$%&*()|';
     $llave = generate_string($permitted_chars, 30);
     return $llave;
 }
 function generar_contrasenia()
 {
-    $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/}{[]@#$%&*()\|';
+    $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/}{[]@#$%&*()|';
     $llave = generate_string($permitted_chars, 10);
     return $llave;
 }

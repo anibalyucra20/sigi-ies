@@ -61,7 +61,6 @@ if (in_array($sistema, $sistemas)) {
 								$_SESSION['sigi_periodo'] = $presente_periodo;
 								$_SESSION['sigi_token'] = $token;
 								$_SESSION['sigi_sede'] = $id_sede;
-								sleep(1);
 								echo "<script> window.location.replace('../sigi/'); </script>";
 								break;
 							case 'S_ACAD':
@@ -75,7 +74,6 @@ if (in_array($sistema, $sistemas)) {
 								$_SESSION['acad_periodo'] = $presente_periodo;
 								$_SESSION['acad_token'] = $token;
 								$_SESSION['acad_sede'] = $id_sede;
-								sleep(1);
 								echo "<script> window.location.replace('../academico/'); </script>";
 								break;
 							case 'S_TUTORIA':
@@ -89,7 +87,6 @@ if (in_array($sistema, $sistemas)) {
 								$_SESSION['tutoria_periodo'] = $presente_periodo;
 								$_SESSION['tutoria_token'] = $token;
 								$_SESSION['tutoria_sede'] = $id_sede;
-								sleep(1);
 								echo "<script> window.location.replace('../tutoria/'); </script>";
 								break;
 							case 'S_BIBLIO':
@@ -103,7 +100,6 @@ if (in_array($sistema, $sistemas)) {
 								$_SESSION['biblioteca_periodo'] = $presente_periodo;
 								$_SESSION['biblioteca_token'] = $token;
 								$_SESSION['biblioteca_sede'] = $id_sede;
-								sleep(1);
 								echo "<script> window.location.replace('../biblioteca/'); </script>";
 								break;
 							case 'S_ADMISION':
@@ -117,7 +113,6 @@ if (in_array($sistema, $sistemas)) {
 								$_SESSION['admision_periodo'] = $presente_periodo;
 								$_SESSION['admision_token'] = $token;
 								$_SESSION['admision_sede'] = $id_sede;
-								sleep(1);
 								echo "<script> window.location.replace('../admision/'); </script>";
 								break;
 							default:

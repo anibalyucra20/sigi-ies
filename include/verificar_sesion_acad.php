@@ -9,10 +9,7 @@ function verificar_sesion($conexion)
         $id_cargo = $r_b_usuario['id_rol'];
         $sesion_activa = sesion_si_activa($conexion, $_SESSION['acad_id_sesion'], $_SESSION['acad_token']);
         if (!$sesion_activa) {
-            echo "<script>
-                alert('La Sesion Caducó, Inicie Sesión');
-                window.location.replace('../include/cerrar_sesion_acad.php');
-    		</script>";
+            return 0;
         } else {
             return $id_cargo;
         }

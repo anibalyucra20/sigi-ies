@@ -48,9 +48,14 @@ if (in_array($sistema, $sistemas)) {
 					$id_sesion = reg_sesion($conexion, $id_usuario, $llave, $id_sistema);
 					$token = password_hash($llave, PASSWORD_DEFAULT);
 					if ($id_sesion != 0) {
-						
+
 						switch ($sistema) {
 							case 'S_SIGI':
+								//cerramos sesiones por si existen
+								unset($_SESSION['sigi_id_sesion']);
+								unset($_SESSION['sigi_periodo']);
+								unset($_SESSION['sigi_token']);
+								unset($_SESSION['sigi_sede']);
 								//se genera las variables de sesion
 								$_SESSION['sigi_id_sesion'] = $id_sesion;
 								$_SESSION['sigi_periodo'] = $presente_periodo;
@@ -60,6 +65,11 @@ if (in_array($sistema, $sistemas)) {
 								echo "<script> window.location.replace('../sigi/'); </script>";
 								break;
 							case 'S_ACAD':
+								//cerramos sesiones por si existen
+								unset($_SESSION['acad_id_sesion']);
+								unset($_SESSION['acad_periodo']);
+								unset($_SESSION['acad_token']);
+								unset($_SESSION['acad_sede']);
 								//se genera las variables de sesion
 								$_SESSION['acad_id_sesion'] = $id_sesion;
 								$_SESSION['acad_periodo'] = $presente_periodo;
@@ -69,6 +79,11 @@ if (in_array($sistema, $sistemas)) {
 								echo "<script> window.location.replace('../academico/'); </script>";
 								break;
 							case 'S_TUTORIA':
+								//cerramos sesiones por si existen
+								unset($_SESSION['tutoria_id_sesion']);
+								unset($_SESSION['tutoria_periodo']);
+								unset($_SESSION['tutoria_token']);
+								unset($_SESSION['tutoria_sede']);
 								//se genera las variables de sesion
 								$_SESSION['tutoria_id_sesion'] = $id_sesion;
 								$_SESSION['tutoria_periodo'] = $presente_periodo;
@@ -78,6 +93,11 @@ if (in_array($sistema, $sistemas)) {
 								echo "<script> window.location.replace('../tutoria/'); </script>";
 								break;
 							case 'S_BIBLIO':
+								//cerramos sesiones por si existen
+								unset($_SESSION['biblioteca_id_sesion']);
+								unset($_SESSION['biblioteca_periodo']);
+								unset($_SESSION['biblioteca_token']);
+								unset($_SESSION['biblioteca_sede']);
 								//se genera las variables de sesion
 								$_SESSION['biblioteca_id_sesion'] = $id_sesion;
 								$_SESSION['biblioteca_periodo'] = $presente_periodo;
@@ -87,6 +107,11 @@ if (in_array($sistema, $sistemas)) {
 								echo "<script> window.location.replace('../biblioteca/'); </script>";
 								break;
 							case 'S_ADMISION':
+								//cerramos sesiones por si existen
+								unset($_SESSION['admision_id_sesion']);
+								unset($_SESSION['admision_periodo']);
+								unset($_SESSION['admision_token']);
+								unset($_SESSION['admision_sede']);
 								//se genera las variables de sesion
 								$_SESSION['admision_id_sesion'] = $id_sesion;
 								$_SESSION['admision_periodo'] = $presente_periodo;

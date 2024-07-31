@@ -288,12 +288,22 @@ function buscarPermisoUsuarioByUsuarioSistemaRol($conexion, $usuario, $sistema, 
 }
 
 
+
+
 // sesiones
 function buscarSesionLoginById($conexion, $id)
 {
 	$sql = "SELECT * FROM sigi_sesiones WHERE id='$id'";
 	return mysqli_query($conexion, $sql);
 }
+function buscarSesionLoginBySistema($conexion, $id)
+{
+	$sql = "SELECT * FROM sigi_sesiones WHERE id_sistema_integrado='$id'";
+	return mysqli_query($conexion, $sql);
+}
+
+
+
 
 // periodos academicos
 function buscarPeriodoAcademico($conexion)
@@ -693,26 +703,26 @@ function buscar_lecturas($conexion){
     $sql = "SELECT * FROM biblioteca_lecturas ";
     return mysqli_query($conexion, $sql);
 }
-function buscar_lecturasByidLibroUsuTipo($conexion, $id_libro, $usuario, $tipo_usu){
-    $sql = "SELECT * FROM biblioteca_lecturas WHERE id_libro='$id_libro' AND id_usuario='$usuario' AND tipo_usuario='$tipo_usu'";
+function buscar_lecturasByidLibroUsu($conexion, $id_libro, $usuario){
+    $sql = "SELECT * FROM biblioteca_lecturas WHERE id_libro='$id_libro' AND id_usuario='$usuario'";
     return mysqli_query($conexion, $sql);
 }
 
-function buscar_4lecturas_invert($conexion, $id_usuario, $tipo_usuario){
-    $sql = "SELECT * FROM biblioteca_lecturas WHERE id_usuario = '$id_usuario' AND tipo_usuario = '$tipo_usuario' ORDER BY id DESC LIMIT 4";
+function buscar_4lecturas_invert($conexion, $id_usuario){
+    $sql = "SELECT * FROM biblioteca_lecturas WHERE id_usuario = '$id_usuario' ORDER BY id DESC LIMIT 4";
     return mysqli_query($conexion, $sql);
 }
 
 //-------------------------FAVORITOS------------------------------
-function buscar_favoritosByidLibroUsuTipo($conexion, $id_libro, $usuario, $tipo_usu){
-    $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_libro='$id_libro' AND id_usuario='$usuario' AND tipo_usuario='$tipo_usu'";
+function buscar_favoritosByidLibroUsu($conexion, $id_libro, $usuario){
+    $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_libro='$id_libro' AND id_usuario='$usuario'";
     return mysqli_query($conexion, $sql);
 }
-function buscar_4ultimos_favoritos($conexion, $id_usuario, $tipo_usuario){
-    $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_usuario = '$id_usuario' AND tipo_usuario = '$tipo_usuario' ORDER BY id DESC LIMIT 4";
+function buscar_4ultimos_favoritos($conexion, $id_usuario){
+    $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_usuario = '$id_usuario'  ORDER BY id DESC LIMIT 4";
     return mysqli_query($conexion, $sql);
 }
-function buscar_favoritos($conexion, $id_usuario, $tipo_usuario){
-    $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_usuario = '$id_usuario' AND tipo_usuario = '$tipo_usuario' ORDER BY id DESC";
+function buscar_favoritos($conexion, $id_usuario){
+    $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_usuario = '$id_usuario' ORDER BY id DESC";
     return mysqli_query($conexion, $sql);
 }

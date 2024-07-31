@@ -348,9 +348,12 @@ if (!verificar_sesion($conexion)) {
                                             <div class="card-body">
                                                 <h5 class="card-title" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;"><?php echo $res_bus['titulo']; ?></h5>
                                                 <p class="card-text"><?php echo $r_b_programa['nombre'] . ' - ' . $r_b_semestre['descripcion']; ?></p>
-                                                <p class="card-text"><?php echo $r_b_ud['descripcion']; ?></p>
+                                                <p class="card-text"><?php echo $r_b_ud['nombre']; ?></p>
                                                 <p class="card-text">Autor: <?php echo $res_bus['autor']; ?></p>
-                                                <center><a href="detalle?libro=<?php echo base64_encode($res_bus['id']); ?>" class="btn btn-info">Ver</a></center>
+                                                <center>
+                                                    <a href="detalle?libro=<?php echo base64_encode($res_bus['id']); ?>" class="btn btn-info">Ver</a>
+                                                    <a href="lectura?libro=<?php echo base64_encode($res_bus['id']); ?>" class="btn btn-success">Leer Libro</a>
+                                                </center>
                                             </div>
                                         </div>
                                     <?php } ?>

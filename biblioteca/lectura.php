@@ -14,6 +14,7 @@ if (!verificar_sesion($conexion)) {
     // validamos si su rol corresponde
     $b_sesion = buscarSesionLoginById($conexion, $_SESSION['biblioteca_id_sesion']);
     $rb_sesion = mysqli_fetch_array($b_sesion);
+    $id_sesion = $rb_sesion['id'];
 
     $b_usuario = buscarUsuarioById($conexion, $rb_sesion['id_usuario']);
     $rb_usuario = mysqli_fetch_array($b_usuario);
@@ -70,9 +71,12 @@ if (!verificar_sesion($conexion)) {
                                                 <div class="col-md-12 mb-3">
                                                     <div class="row">
                                                         <div class="col-md-2">
+                                                        <a href="javascript: history.go(-1)" class="btn btn-danger">Regresar</a>
+                                                        <br>
+                                                        <br>
                                                             <input type="hidden" id="librodd" value="<?php echo $link_libro; ?>">
                                                             <?php
-                                                            $b_favorito = buscar_favoritosByidLibroUsuTipo($conexion, $r_b_libro['id'], $r_buscar_sesion['id_usuario'], $tipo_usuario);
+                                                            $b_favorito = buscar_favoritosByidLibroUsu($conexion, $r_b_libro['id'], $id_usuario);
                                                             $cont = mysqli_num_rows($b_favorito);
                                                             if ($cont > 0) {
                                                                 $color = "danger";
@@ -83,7 +87,7 @@ if (!verificar_sesion($conexion)) {
                                                             }
                                                             ?>
                                                             <div id="mostrar_noti">
-                                                                <button type="button" class="btn btn-outline-<?php echo $color; ?> waves-effect waves-light" id="btn_agregar"> <?php echo $texto; ?> <i class="fas fa-heart"></i></button>
+                                                                <button type="button" class="btn btn-outline-<?php echo $color; ?> waves-effect waves-light" onclick="agregar_favorito();"> <?php echo $texto; ?> <i class="fas fa-heart"></i></button>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-8">
@@ -91,14 +95,12 @@ if (!verificar_sesion($conexion)) {
                                                                 <h4><?php echo $r_b_libro['titulo'] ?></h4>
                                                             </center>
                                                         </div>
-                                                        <div class="col-md-4" id="mostrar_noti">
-                                                        </div>
                                                     </div>
 
                                                 </div>
                                             </div>
                                             <div class="col-md-12 mb-3">
-                                            <iframe src="archivos/<?php echo $r_b_libro['libro'];  ?>" type="application/pdf" width="100%" height="900px"></iframe>
+                                                <iframe src="archivos/<?php echo $r_b_libro['libro'];  ?>" type="application/pdf" width="100%" height="900px"></iframe>
                                             </div>
                                         </div>
                                     </div>
@@ -110,20 +112,18 @@ if (!verificar_sesion($conexion)) {
                         // registrar lectura
 
 
-                        $id_libro = $r_b_libro['id'];
-                        $id_sesion = $_SESSION['id_sesion_biblioteca'];
-                        $id_usuario = $r_buscar_sesion['id_usuario'];
+                        $id_libro = $link_libro;
                         $fecha_hora = date("Y-m-d H:i:s");
                         $cont = 0;
 
-                        $b_lecturas = buscar_lecturasByidLibroUsuTipo($conexion, $id_libro, $id_usuario, $tipo_usuario);
+                        $b_lecturas = buscar_lecturasByidLibroUsu($conexion, $id_libro, $id_usuario);
                         while ($r_b_lecturas = mysqli_fetch_array($b_lecturas)) {
                             if (date("Y-m-d", strtotime($r_b_lecturas['fecha_hora'])) == date("Y-m-d")) {
                                 $cont++;
                             }
                         }
                         if ($cont < 1) {
-                            $consulta = "INSERT INTO lecturas (id_sesion, id_usuario, tipo_usuario, id_libro, fecha_hora) VALUES ('$id_sesion', '$id_usuario', '$tipo_usuario', '$id_libro', '$fecha_hora')";
+                            $consulta = "INSERT INTO biblioteca_lecturas (id_sesion, id_usuario, id_libro, fecha_hora) VALUES ('$id_sesion', '$id_usuario', '$id_libro', '$fecha_hora')";
                             $ejecutar = mysqli_query($conexion, $consulta);
                         }
 
@@ -146,17 +146,10 @@ if (!verificar_sesion($conexion)) {
             <?php include "include/pie_scripts.php"; ?>
 
             <script type="text/javascript">
-                $(document).ready(function() {
-                    $('#btn_agregar').click(function() {
-                        agregar_favorito();
-                    });
-                })
-            </script>
-            <script type="text/javascript">
                 function agregar_favorito() {
                     $.ajax({
                         type: "POST",
-                        url: "add_favorito.php",
+                        url: "operaciones/add_favorito.php",
                         data: "libro=" + $('#librodd').val(),
                         success: function(r) {
                             $('#mostrar_noti').html(r);

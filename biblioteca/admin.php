@@ -39,7 +39,6 @@ if (!verificar_sesion($conexion)) {
                   window.location.replace('../biblioteca/');
               </script>";
         } else {
-            $r_b_usuario = mysqli_fetch_array($b_usuario);
 
 ?>
 

@@ -85,7 +85,7 @@ if (!verificar_sesion($conexion)) {
                                                 <div class="col-md-4 mb-3">
                                                     <center>
                                                         <?php
-                                                        $b_favorito = buscar_favoritosByidLibroUsuTipo($conexion, $r_b_libro['id'], $id_usuario, $tipo_usuario);
+                                                        $b_favorito = buscar_favoritosByidLibroUsu($conexion, $r_b_libro['id'], $id_usuario);
                                                         $cont = mysqli_num_rows($b_favorito);
                                                         if ($cont > 0) {
                                                             $color = "danger";
@@ -96,8 +96,9 @@ if (!verificar_sesion($conexion)) {
                                                         }
                                                         ?>
                                                         <div class="row">
+                                                        <a href="javascript: history.go(-1)" class="btn btn-danger">Regresar</a>
                                                             <div class="col-md-6" id="mostrar_noti">
-                                                                <button type="button" class="btn btn-outline-<?php echo $color; ?> waves-effect waves-light" id="btn_agregar"> <?php echo $texto; ?> <i class="fas fa-heart"></i></button>
+                                                                <button type="button" class="btn btn-outline-<?php echo $color; ?> waves-effect waves-light" onclick="agregar_favorito();"> <?php echo $texto; ?> <i class="fas fa-heart"></i></button>
                                                             </div>
                                                             <input type="hidden" id="librodd" value="<?php echo $link_libro; ?>">
                                                             <a href="lectura?libro=<?php echo base64_encode($link_libro); ?>" class="btn btn-success">Leer Libro</a>
@@ -203,18 +204,12 @@ if (!verificar_sesion($conexion)) {
 
             <?php include "include/pie_scripts.php"; ?>
 
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $('#btn_agregar').click(function() {
-                        agregar_favorito();
-                    });
-                })
-            </script>
+            
             <script type="text/javascript">
                 function agregar_favorito() {
                     $.ajax({
                         type: "POST",
-                        url: "add_favorito.php",
+                        url: "operaciones/add_favorito.php",
                         data: "libro=" + $('#librodd').val(),
                         success: function(r) {
                             $('#mostrar_noti').html(r);

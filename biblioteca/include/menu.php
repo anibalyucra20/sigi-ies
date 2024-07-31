@@ -3,9 +3,13 @@
         <!-- LOGO -->
         <div class="navbar-brand-box d-flex align-items-left">
             <a href="index.php" class="logo">
-                <img src="images/logo.png" alt="" width="90px">
+                <img src="../images/logo.png" alt="" width="90px">
+                <?php
+                $b_datos = buscarDatosSistema($conexion);
+                $r_b_datos = mysqli_fetch_array($b_datos);
+                ?>
                 <span>
-                    Biblioteca Virtual IESTP HUANTA
+                    Biblioteca Virtual <?php  echo $r_b_datos['nombre_corto']; ?>
                 </span>
             </a>
 

@@ -66,31 +66,33 @@ if (!verificar_sesion($conexion)) {
                                     $b_libro = buscar_libroById($conexion, $r_b_lecturas['id_libro']);
                                     $r_b_libro = mysqli_fetch_array($b_libro);
 
-                                    $b_programa = buscarProgramaEstudioById($conexion_sispa, $r_b_libro['id_programa_estudio']);
+                                    $b_programa = buscarProgramaEstudioById($conexion, $r_b_libro['id_programa_estudio']);
                                     $r_b_programa = mysqli_fetch_array($b_programa);
 
-                                    $b_semestre = buscarSemestreById($conexion_sispa, $r_b_libro['id_semestre']);
+                                    $b_semestre = buscarSemestreById($conexion, $r_b_libro['id_semestre']);
                                     $r_b_semestre = mysqli_fetch_array($b_semestre);
- 
-                                    $b_ud = buscarUnidadDidacticaById($conexion_sispa, $r_b_libro['id_unidad_didactica']);
+
+                                    $b_ud = buscarUnidadDidacticaById($conexion, $r_b_libro['id_unidad_didactica']);
                                     $r_b_ud = mysqli_fetch_array($b_ud);
                                 ?>
                                     <div class="card col-lg-3 col-md-3 col-sm-6 mb-2">
-                                        <!--<img class=" my-2" src="https://drive.google.com/uc?export=view&id=1VRIuTHH5N3wgecP4o8wvB6YyEXumNECv" width="100%" height="500px">https://drive.google.com/file/d/1l_OW56Qc7h_X1ekH83yI7MWo1_Pw9Qcl/view?usp=drive_link-->
-                                        <a href="detalle.php?libro=<?php echo $r_b_libro['link_portada']; ?>">
-                                            <iframe src="https://drive.google.com/file/d/<?php echo $r_b_libro['link_portada']; ?>/preview" frameborder="none" style="width:100%; height:500px; overflow: hidden;" scrolling="no"></iframe>
-                                        </a>
+                                        <img src="portadas/<?php echo $r_b_libro['portada'];  ?>" alt="" style="width:100%; height:500px; margin-top:5px;">
                                         <div class="card-body">
                                             <h5 class="card-title" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;"><?php echo $r_b_libro['titulo']; ?></h5>
                                             <p class="card-text"><?php echo $r_b_programa['nombre'] . ' - S-' . $r_b_semestre['descripcion']; ?></p>
-                                            <p class="card-text"><?php echo $r_b_ud['descripcion']; ?></p>
+                                            <p class="card-text"><?php echo $r_b_ud['nombre']; ?></p>
                                             <p class="card-text">Autor: <?php echo $r_b_libro['autor']; ?></p>
-                                            <center><a href="detalle.php?libro=<?php echo $r_b_libro['link_portada']; ?>" class="btn btn-info">Ver</a></center>
+                                            <center>
+                                                <a href="detalle.php?libro=<?php echo base64_encode($r_b_libro['id']); ?>" class="btn btn-info">Ver</a>
+                                                <a href="lectura?libro=<?php echo base64_encode($r_b_libro['id']); ?>" class="btn btn-success">Leer Libro</a>
+                                            </center>
 
                                         </div>
                                     </div>
                                 <?php } ?>
                             </div>
+                            <br>
+                            <br>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="page-title-box d-flex align-items-center justify-content-between">
@@ -105,23 +107,26 @@ if (!verificar_sesion($conexion)) {
                                     $b_libro = buscar_libroById($conexion, $r_b_favoritos['id_libro']);
                                     $r_b_libro = mysqli_fetch_array($b_libro);
 
-                                    $b_programa = buscarProgramaEstudioById($conexion_sispa, $r_b_libro['id_programa_estudio']);
+                                    $b_programa = buscarProgramaEstudioById($conexion, $r_b_libro['id_programa_estudio']);
                                     $r_b_programa = mysqli_fetch_array($b_programa);
 
-                                    $b_semestre = buscarSemestreById($conexion_sispa, $r_b_libro['id_semestre']);
+                                    $b_semestre = buscarSemestreById($conexion, $r_b_libro['id_semestre']);
                                     $r_b_semestre = mysqli_fetch_array($b_semestre);
 
-                                    $b_ud = buscarUnidadDidacticaById($conexion_sispa, $r_b_libro['id_unidad_didactica']);
+                                    $b_ud = buscarUnidadDidacticaById($conexion, $r_b_libro['id_unidad_didactica']);
                                     $r_b_ud = mysqli_fetch_array($b_ud);
                                 ?>
                                     <div class="card col-lg-3 col-md-3 col-sm-6 mb-2">
-                                        <iframe src="https://drive.google.com/file/d/<?php echo $r_b_libro['link_portada']; ?>/preview" frameborder="none" style="width:100%; height:500px; overflow: hidden;" scrolling="no"></iframe>
+                                        <img src="portadas/<?php echo $r_b_libro['portada'];  ?>" alt="" style="width:100%; height:500px; margin-top:5px;">
                                         <div class="card-body">
                                             <h5 class="card-title" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;"><?php echo $r_b_libro['titulo']; ?></h5>
                                             <p class="card-text"><?php echo $r_b_programa['nombre'] . ' - S-' . $r_b_semestre['descripcion']; ?></p>
-                                            <p class="card-text"><?php echo $r_b_ud['descripcion']; ?></p>
+                                            <p class="card-text"><?php echo $r_b_ud['nombre']; ?></p>
                                             <p class="card-text">Autor: <?php echo $r_b_libro['autor']; ?></p>
-                                            <center><a href="detalle.php?libro=<?php echo $r_b_libro['link_portada'] ?>" class="btn btn-info">Ver</a></center>
+                                            <center>
+                                                <a href="detalle?libro=<?php echo base64_encode($r_b_libro['id']); ?>" class="btn btn-info">Ver</a>
+                                                <a href="lectura?libro=<?php echo base64_encode($r_b_libro['id']); ?>" class="btn btn-success">Leer Libro</a>
+                                            </center>
                                         </div>
                                     </div>
                                 <?php } ?>

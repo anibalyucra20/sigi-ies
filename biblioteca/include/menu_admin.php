@@ -4,8 +4,12 @@
         <div class="navbar-brand-box d-flex align-items-left">
         <a href="admin" class="logo">
                 <img src="../images/logo.png" alt="" width="90px">
+                <?php
+                $b_datos = buscarDatosSistema($conexion);
+                $r_b_datos = mysqli_fetch_array($b_datos);
+                ?>
                 <span>
-                    Biblioteca Virtual IESTP HUANTA
+                    Biblioteca Virtual <?php  echo $r_b_datos['nombre_corto']; ?>
                 </span>
             </a>
             <button type="button" class="btn btn-sm mr-2 font-size-16 d-lg-none header-item waves-effect waves-light" data-toggle="collapse" data-target="#topnav-menu-content">

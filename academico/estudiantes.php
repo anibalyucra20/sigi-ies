@@ -73,7 +73,16 @@ if (!verificar_sesion($conexion)) {
 
             <!-- Custom Theme Style -->
             <link href="../plantilla/Gentella/build/css/custom.min.css" rel="stylesheet">
-
+            <script>
+                function confirmarcambio(data) {
+                    var r = confirm("Estas Seguro de Resetear Contraseña? ");
+                    if (r == true) {
+                        reset_password(data);
+                    } else {
+                        return false;
+                    }
+                }
+            </script>
         </head>
 
         <body class="nav-md">
@@ -102,6 +111,7 @@ if (!verificar_sesion($conexion)) {
                                             ?>
                                             <div class="clearfix"></div>
                                         </div>
+                                        <div class="col-12" id="mostrar_noti"></div>
                                         <div class="x_content">
                                             <br />
 
@@ -150,6 +160,7 @@ if (!verificar_sesion($conexion)) {
                                                                 <td><?php echo $res_busc_periodo['nombre']; ?></td>
                                                                 <td>
                                                                     <button class="btn btn-success" data-toggle="modal" data-target=".edit_<?php echo $rb_est_programa['id']; ?>"><i class="fa fa-pencil-square-o"></i> Editar</button>
+                                                                    <button class="btn btn-info" title="Resetear Contraseña" onclick="confirmarcambio('<?php echo base64_encode($res_busc_est['id']); ?>');"><i class="fa fa-key"></i></button>
                                                                 </td>
                                                             </tr>
                                                     <?php
@@ -359,6 +370,18 @@ if (!verificar_sesion($conexion)) {
                     });
 
                 });
+            </script>
+            <script type="text/javascript">
+                function reset_password(usuario) {
+                    $.ajax({
+                        type: "POST",
+                        url: "../sigi/operaciones/reset_password.php",
+                        data: "data=" + usuario,
+                        success: function(r) {
+                            $('#mostrar_noti').html(r);
+                        }
+                    });
+                }
             </script>
             <?php mysqli_close($conexion); ?>
         </body>

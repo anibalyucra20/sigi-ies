@@ -67,6 +67,16 @@ if (!verificar_sesion($conexion)) {
       <!-- Custom Theme Style -->
       <link href="../plantilla/Gentella/build/css/custom.min.css" rel="stylesheet">
 
+      <script>
+        function confirmarcambio(data) {
+          var r = confirm("Estas Seguro de Resetear Contraseña? ");
+          if (r == true) {
+            reset_password(data);
+          } else {
+            return false;
+          }
+        }
+      </script>
     </head>
 
     <body class="nav-md">
@@ -90,6 +100,7 @@ if (!verificar_sesion($conexion)) {
 
                       <div class="clearfix"></div>
                     </div>
+                    <div class="col-12" id="mostrar_noti"></div>
                     <div class="x_content">
                       <br />
 
@@ -142,6 +153,7 @@ if (!verificar_sesion($conexion)) {
                               <td>
                                 <button class="btn btn-success" data-toggle="modal" data-target=".edit_<?php echo $res_busc_doc['id']; ?>"><i class="fa fa-pencil-square-o"></i> Editar</button>
                                 <button class="btn btn-warning" data-toggle="modal" data-target=".permisos_<?php echo $res_busc_doc['id']; ?>"><i class="fa fa-key"></i> Permisos</button>
+                                <button class="btn btn-info" title="Resetear Contraseña" onclick="confirmarcambio('<?php echo base64_encode($res_busc_doc['id']); ?>');"><i class="fa fa-key"></i></button>
                               </td>
                             </tr>
                           <?php
@@ -382,6 +394,18 @@ if (!verificar_sesion($conexion)) {
           });
 
         });
+      </script>
+      <script type="text/javascript">
+        function reset_password(usuario) {
+          $.ajax({
+            type: "POST",
+            url: "operaciones/reset_password.php",
+            data: "data=" + usuario,
+            success: function(r) {
+              $('#mostrar_noti').html(r);
+            }
+          });
+        }
       </script>
       <?php mysqli_close($conexion); ?>
     </body>

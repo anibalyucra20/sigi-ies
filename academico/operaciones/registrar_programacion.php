@@ -25,6 +25,7 @@ if (!verificar_sesion($conexion)) {
     $id_sistema = $rb_sistema['id'];
 
     $b_permiso = buscarPermisoUsuarioByUsuarioSistema($conexion, $id_usuario, $id_sistema);
+    $contar_permiso = mysqli_num_rows($b_permiso);
     $rb_permiso = mysqli_fetch_array($b_permiso);
 
     $id_periodo_act = $_SESSION['acad_periodo'];
@@ -35,7 +36,7 @@ if (!verificar_sesion($conexion)) {
     $b_sede_act = buscarSedeById($conexion, $id_sede_act);
     $rb_sede_act = mysqli_fetch_array($b_sede_act);
 
-    if ($rb_permiso['id_rol'] != 1 || $rb_usuario['estado'] == 0) {
+    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0 || $rb_permiso['id_rol'] != 2) {
         echo "<script>
 					alert('Error, PERMISOS NO SUFICIENTES PARA REALIZAR LA OPERACIÓN');
 					window.history.back();

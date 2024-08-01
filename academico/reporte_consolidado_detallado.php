@@ -34,7 +34,7 @@ if (!verificar_sesion($conexion)) {
     $b_sede_act = buscarSedeById($conexion, $id_sede_act);
     $rb_sede_act = mysqli_fetch_array($b_sede_act);
 
-    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0) {
+    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0 || $rb_permiso['id_rol'] != 4) {
         echo "<center><h1>PERMISOS NO SUFICIENTES PARA ACCEDER A LA PÁGINA SOLICITADA</h1><br>
     <a href='../academico/'>Regresar</a><br>
     <a href='../include/cerrar_sesion_sigi.php'>Cerrar Sesión</a><br>

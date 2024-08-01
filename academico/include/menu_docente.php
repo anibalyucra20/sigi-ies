@@ -7,7 +7,7 @@
                 <img src="../images/logo.png" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
-                <span>Bienvenido,</span>
+                <span>Bienvenido</span>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -18,38 +18,63 @@
                 <h3>Menu de Navegación</h3>
                 <ul class="nav side-menu">
                     <li><a href="../academico/"><i class="fa fa-home"></i>Inicio</a></li>
-                    <li><a><i class="fa fa-calendar"></i> Planificacion <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="programacion">Programacion de Clases</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-check-square-o"></i> Matrículas <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="matriculas">Registro de Matrícula</a></li>
-                            <li class="sub_menu"><a href="licencias">Licencias</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-graduation-cap"></i> Estudiantes <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="estudiantes">Relación de Estudiantes</a></li>
-                        </ul>
-                    </li>
+                    <?php if ($rb_permiso['id_rol'] == 2) {
+                    ?>
+                        <li><a><i class="fa fa-calendar"></i> Planificación <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li><a href="programacion">Programación de Clases</a></li>
+                            </ul>
+                        </li>
+                    <?php
+                    } ?>
+                    <?php if ($rb_permiso['id_rol'] == 2) {
+                    ?>
+                        <li><a><i class="fa fa-check-square-o"></i> Matrículas <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li class="sub_menu"><a href="matriculas">Registro de Matrícula</a></li>
+                                <li class="sub_menu"><a href="licencias">Licencias</a></li>
+                            </ul>
+                        </li>
+                    <?php
+                    } ?>
+                    <?php if ($rb_permiso['id_rol'] == 2) {
+                    ?>
+                        <li><a><i class="fa fa-graduation-cap"></i> Estudiantes <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li class="sub_menu"><a href="estudiantes">Relación de Estudiantes</a></li>
+                            </ul>
+                        </li>
+                    <?php
+                    } ?>
                     <li><a><i class="fa fa-pencil-square-o"></i> Unidades Didácticas <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li class="sub_menu"><a href="unidades_didacticas">Mis Unidades Didácticas</a></li>
-                            <li class="sub_menu"><a href="pe_unidades_didacticas">Todas las Unidades Didácticas</a></li>
+                            <?php if ($rb_permiso['id_rol'] == 4) {
+                            ?>
+                                <li class="sub_menu"><a href="pe_unidades_didacticas">Todas las Unidades Didácticas</a></li>
+                            <?php
+                            } ?>
                         </ul>
                     </li>
-                    <li><a><i class="fa fa-book"></i> Evaluación <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="calificaciones_unidades_didacticas">Registro de Evaluación</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-book"></i> Reportes <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li class="sub_menu"><a href="reportes_coordinador">Reportes de Coordinador</a></li>
-                        </ul>
-                    </li>
+
+                    <?php if ($rb_permiso['id_rol'] == 2) {
+                    ?>
+                        <li><a><i class="fa fa-book"></i> Evaluación <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li class="sub_menu"><a href="calificaciones_unidades_didacticas">Registro de Evaluación</a></li>
+                            </ul>
+                        </li>
+                    <?php
+                    } ?>
+                    <?php if ($rb_permiso['id_rol'] == 4) {
+                    ?>
+                        <li><a><i class="fa fa-book"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu">
+                                <li class="sub_menu"><a href="reportes_coordinador">Reportes de Coordinador</a></li>
+                            </ul>
+                        </li>
+                    <?php
+                    } ?>
                 </ul>
             </div>
         </div>
@@ -92,8 +117,8 @@
                             <li><a href="operaciones/actualizar_sesion_periodo?dato=<?php echo $res_busc_periodos['id']; ?>"><?php if ($res_busc_periodos['id'] == $_SESSION['acad_periodo']) {
                                                                                                                                     echo "<b>";
                                                                                                                                 } ?><?php echo $res_busc_periodos['nombre']; ?><?php if ($res_busc_periodos['id'] == $_SESSION['acad_periodo']) {
-                                                                                                                                                                                        echo "</b>";
-                                                                                                                                                                                    } ?></a></li>
+                                                                                                                                                                                    echo "</b>";
+                                                                                                                                                                                } ?></a></li>
                         <?php
                         }
                         ?>
@@ -115,8 +140,8 @@
                             <li><a href="operaciones/actualizar_sesion_sedes?dato=<?php echo $rb_sede_menu['id']; ?>"><?php if ($rb_sede_menu['id'] == $_SESSION['acad_sede']) {
                                                                                                                             echo "<b>";
                                                                                                                         } ?><?php echo $rb_sede_menu['nombre']; ?><?php if ($rb_sede_menu['id'] == $_SESSION['acad_sede']) {
-                                                                                                                                                                                    echo "</b>";
-                                                                                                                                                                                } ?></a></li>
+                                                                                                                                                                        echo "</b>";
+                                                                                                                                                                    } ?></a></li>
                         <?php } ?>
                     </ul>
                 </li>

@@ -23,6 +23,7 @@ if (!verificar_sesion($conexion)) {
     $id_sistema = $rb_sistema['id'];
 
     $b_permiso = buscarPermisoUsuarioByUsuarioSistema($conexion, $id_usuario, $id_sistema);
+    $contar_permiso = mysqli_num_rows($b_permiso);
     $rb_permiso = mysqli_fetch_array($b_permiso);
 
     $id_periodo_act = $_SESSION['acad_periodo'];
@@ -36,7 +37,7 @@ if (!verificar_sesion($conexion)) {
     $id_prog = $_POST['id_prog'];
     $b_prog = buscarProgramacionUDById($conexion, $id_prog);
     $res_b_prog = mysqli_fetch_array($b_prog);
-    if ($rb_permiso['id_rol'] != 1 || $rb_usuario['estado'] == 0 || $res_b_prog['id_docente'] != $id_usuario) {
+    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0 || ($res_b_prog['id_usuario'] != $id_usuario && $rb_permiso['id_rol'] != 2)) {
         echo "<script>
 					alert('Error, PERMISOS NO SUFICIENTES PARA REALIZAR LA OPERACIÓN');
 					window.history.back();

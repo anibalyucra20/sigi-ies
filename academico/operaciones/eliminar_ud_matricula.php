@@ -34,7 +34,7 @@ if (!verificar_sesion($conexion)) {
     $b_sede_act = buscarSedeById($conexion, $id_sede_act);
     $rb_sede_act = mysqli_fetch_array($b_sede_act);
 
-    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0) {
+    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0 || $rb_permiso['id_rol'] != 2) {
         echo "<script>
 					alert('Error, PERMISOS NO SUFICIENTES PARA REALIZAR LA OPERACIÓN');
 					window.history.back();

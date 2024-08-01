@@ -34,15 +34,20 @@ if (!verificar_sesion($conexion)) {
     $b_sede_act = buscarSedeById($conexion, $id_sede_act);
     $rb_sede_act = mysqli_fetch_array($b_sede_act);
 
-    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0) {
+    $id_sesion = base64_decode($_GET['data']);
+    $id_prog = base64_decode($_GET['data2']);
+
+    $b_prog = buscarProgramacionUDById($conexion, $id_prog);
+    $res_b_prog = mysqli_fetch_array($b_prog);
+
+    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0  || $res_b_prog['id_docente'] != $id_usuario) {
         echo "<script>
 					alert('Error, PERMISOS NO SUFICIENTES PARA REALIZAR LA OPERACIÓN');
 					window.history.back();
 				</script>
 			";
     } else {
-        $id_sesion = base64_decode($_GET['data']);
-        $id_prog = base64_decode($_GET['data2']);
+
 
         //---------- DATOS DE SESION ----------------
         $b_sesion = buscarSesionAprendizajeById($conexion, $id_sesion);

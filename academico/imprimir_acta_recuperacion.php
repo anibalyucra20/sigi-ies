@@ -39,7 +39,7 @@ if (!verificar_sesion($conexion)) {
     $cont_res = mysqli_num_rows($b_prog);
     $res_b_prog = mysqli_fetch_array($b_prog);
 
-    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0 || $res_b_prog['id_usuario'] == $id_usuario) {
+    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0 || ($res_b_prog['id_usuario'] != $id_usuario && $rb_permiso['id_rol'] != 2)) {
         echo "<center><h1>PERMISOS NO SUFICIENTES PARA ACCEDER A LA PÁGINA SOLICITADA</h1><br>
     <a href='../academico/'>Regresar</a><br>
     <a href='../include/cerrar_sesion_sigi.php'>Cerrar Sesión</a><br>

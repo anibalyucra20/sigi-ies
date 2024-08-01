@@ -34,7 +34,13 @@ if (!verificar_sesion($conexion)) {
     $b_sede_act = buscarSedeById($conexion, $id_sede_act);
     $rb_sede_act = mysqli_fetch_array($b_sede_act);
 
-    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0) {
+    $id_prog_actual = $_POST['myidactual'];
+    $id_prog_a_copiar = $_POST['sesion_copi'];
+
+    $b_prog = buscarProgramacionUDById($conexion, $id_prog_actual);
+    $res_b_prog = mysqli_fetch_array($b_prog);
+
+    if ($contar_permiso == 0 || $rb_usuario['estado'] == 0 || $res_b_prog['id_docente'] != $id_usuario) {
         echo "<script>
 					alert('Error, PERMISOS NO SUFICIENTES PARA REALIZAR LA OPERACIÓN');
 					window.history.back();
@@ -43,8 +49,7 @@ if (!verificar_sesion($conexion)) {
     } else {
 
 
-        $id_prog_actual = $_POST['myidactual'];
-        $id_prog_a_copiar = $_POST['sesion_copi'];
+       
 
         $b_silabos_prog_actual = buscarSilabosByIdProgramacion($conexion, $id_prog_actual);
         $r_b_silabo_prog_actual = mysqli_fetch_array($b_silabos_prog_actual);

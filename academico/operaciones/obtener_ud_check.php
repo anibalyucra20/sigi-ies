@@ -26,8 +26,12 @@ while ($mostrar = mysqli_fetch_array($ejec_cons)) {
   $busc_progr = buscarProgramacionByUd_Peridodo_ProgramaSedeTurnoSeccion($conexion, $id_unidad_didactica, $id_pe_sede, $_SESSION['acad_periodo'], $id_turno, $id_seccion);
   $cont = mysqli_num_rows($busc_progr);
   if ($cont > 0) {
-    $res_ud = mysqli_fetch_array($busc_progr);
-    $cadena = $cadena . '<div class="checkbox"><label><input type="checkbox" name="unidades_didacticas" onchange="gen_arr_uds();" value="' . $res_ud["id"] . '">' . $mostrar["nombre"] . '</label></div>';
+    while ($res_prog = mysqli_fetch_array($busc_progr)) {
+      $b_usuario = buscarUsuarioById($conexion, $res_prog['id_docente']);
+      $rb_usuario = mysqli_fetch_array($b_usuario);
+    $cadena = $cadena . '<div class="checkbox"><label><input type="checkbox" name="unidades_didacticas" onchange="gen_arr_uds();" value="' . $res_prog["id"] . '">' . $mostrar["nombre"] . ' - '.$rb_usuario['apellidos_nombres'].'</label></div>';
+    }
+    
   }
 }
 echo $cadena;

@@ -35,7 +35,7 @@ if (!verificar_sesion($conexion)) {
     $rb_sede_act = mysqli_fetch_array($b_sede_act);
 
     $id_prog = base64_decode($_GET['data']);
-   
+
 
     $b_prog = buscarProgramacionUDById($conexion, $id_prog);
     $res_b_prog = mysqli_fetch_array($b_prog);
@@ -161,7 +161,7 @@ if (!verificar_sesion($conexion)) {
                                                     <table id="" class="table table-striped table-bordered" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                            <th rowspan="2">
+                                                                <th rowspan="2">
                                                                     <center>Nro</center>
                                                                 </th>
                                                                 <th rowspan="2">
@@ -200,6 +200,11 @@ if (!verificar_sesion($conexion)) {
                                                                 ?>
                                                                         <th>
                                                                             <p class="verticalll" id=""><?php echo $r_b_sesion['fecha_desarrollo']; ?></p>
+                                                                            <select id="asis_m_<?php echo base64_encode($r_b_sesion['id']); ?>" onchange="asistencia_masiva('<?php echo base64_encode($r_b_sesion['id']); ?>');">
+                                                                                <option value=""></option>
+                                                                                <option value="P">P</option>
+                                                                                <option value="F">F</option>
+                                                                            </select>*
                                                                         </th>
                                                                 <?php
                                                                     }
@@ -369,6 +374,25 @@ if (!verificar_sesion($conexion)) {
                     });
 
                 });
+            </script>
+            <script type="text/javascript">
+                function asistencia_masiva(data) {
+                    data2 = '<?php echo base64_encode($id_prog); ?>';
+                    valor = document.getElementById('asis_m_' + data).value;
+                    $.ajax({
+                        type: "POST",
+                        url: "operaciones/actualizar_asistencia_masiva.php",
+                        data: {
+                            ddata: data,
+                            ddata2: data2,
+                            asistencia: valor
+                        },
+                        success: function(r) {
+                            location.reload();
+
+                        }
+                    });
+                }
             </script>
 
 

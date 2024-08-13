@@ -201,6 +201,28 @@ $rb_datos_iest = mysqli_fetch_array($datos_institucion);
                             </div>
                         </div>
                         <!-- price element -->
+                        <?php }
+                    if (in_array("S_BOLSA", $sistemas)) { ?>
+                        <!-- price element -->
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="pricing">
+                                <div class="title">
+                                    <h2></h2>
+                                    <h1>Bolsa Laboral</h1>
+                                </div>
+                                <div class="x_content">
+                                    <div class="">
+                                        <div class="pricing_features">
+                                            <img src="images/logo.png" alt="" width="100%" height="100%">
+                                        </div>
+                                    </div>
+                                    <div class="pricing_footer">
+                                        <a href="bolsa/" class="btn btn-success btn-block" role="button">Acceder</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- price element -->
                     <?php }
 
                     ?>

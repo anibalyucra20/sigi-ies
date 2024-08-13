@@ -115,6 +115,19 @@ if (in_array($sistema, $sistemas)) {
 								$_SESSION['admision_sede'] = $id_sede;
 								echo "<script> window.location.replace('../admision/'); </script>";
 								break;
+							case 'S_BOLSA':
+								//cerramos sesiones por si existen
+								unset($_SESSION['bolsa_id_sesion']);
+								unset($_SESSION['bolsa_periodo']);
+								unset($_SESSION['bolsa_token']);
+								unset($_SESSION['bolsa_sede']);
+								//se genera las variables de sesion
+								$_SESSION['bolsa_id_sesion'] = $id_sesion;
+								$_SESSION['bolsa_periodo'] = $presente_periodo;
+								$_SESSION['bolsa_token'] = $token;
+								$_SESSION['bolsa_sede'] = $id_sede;
+								echo "<script> window.location.replace('../bolsa/'); </script>";
+								break;
 							default:
 								# code...
 								break;

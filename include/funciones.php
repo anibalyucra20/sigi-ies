@@ -103,6 +103,9 @@ function obtener_titulo_sistema($data)
         case 'S_ADMISION':
             $nombre = "SIGI - Admisión";
             break;
+        case 'S_BOLSA':
+            $nombre = "SIGI - Bolsa Laboral";
+            break;
         default:
             $nombre = "SIGI";
             break;
@@ -546,11 +549,11 @@ function calc_evaluacion($conexion, $id_calificacion)
 
 //funcion para calcular la cantidad de ud desaprobadas de esrudiantes
 
-function calc_ud_desaprobado_sin_recuperacion($conexion, $id_est, $per_select,$sede, $id_programa_sede, $id_sem,$turno,$seccion)
+function calc_ud_desaprobado_sin_recuperacion($conexion, $id_est, $per_select, $sede, $id_programa_sede, $id_sem, $turno, $seccion)
 {
 
     //buscar si estudiante esta matriculado en una unidad didactica
-    $b_ud_pe_sem = buscarUnidadDidacticaByIdSemestre($conexion,$id_sem);
+    $b_ud_pe_sem = buscarUnidadDidacticaByIdSemestre($conexion, $id_sem);
 
     $cont_ud_desaprobadas = 0;
     while ($r_bb_ud = mysqli_fetch_array($b_ud_pe_sem)) {
@@ -621,10 +624,10 @@ function calc_ud_desaprobado_sin_recuperacion($conexion, $id_est, $per_select,$s
 
 // funcion para calcular si estudiante se matriculo a todas las ud del semestre (en caso de repitencia)
 
-function calcular_mat_ud($conexion, $id_est, $per_select,$sede, $id_programa_sede, $id_sem, $turno, $seccion)
+function calcular_mat_ud($conexion, $id_est, $per_select, $sede, $id_programa_sede, $id_sem, $turno, $seccion)
 {
     //buscar si estudiante esta matriculado en una unidad didactica
-    $b_ud_pe_sem = buscarUnidadDidacticaByIdSemestre($conexion,$id_sem);
+    $b_ud_pe_sem = buscarUnidadDidacticaByIdSemestre($conexion, $id_sem);
     $cant_ud_sem = mysqli_num_rows($b_ud_pe_sem);
 
     $cant_matt = 0;

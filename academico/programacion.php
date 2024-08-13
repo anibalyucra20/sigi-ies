@@ -129,6 +129,7 @@ if (!verificar_sesion($conexion)) {
                                                 </thead>
                                                 <tbody>
                                                     <?php
+                                                    $cont = 0;
                                                     $b_pe = buscarProgramaEstudio($conexion);
                                                     while ($rb_pe = mysqli_fetch_array($b_pe)) {
                                                         $id_pe = $rb_pe['id'];
@@ -136,7 +137,6 @@ if (!verificar_sesion($conexion)) {
                                                         $rb_pe_sede = mysqli_fetch_array($b_pe_sede);
                                                         $id_pe_sede = $rb_pe_sede['id'];
 
-                                                        $cont = 0;
                                                         $ejec_busc_programacion = buscarProgramacionUDByPeriodoSede($conexion, $id_periodo_act, $id_pe_sede);
                                                         while ($res_busc_programacion = mysqli_fetch_array($ejec_busc_programacion)) {
                                                             $data = base64_encode($res_busc_programacion['id']);

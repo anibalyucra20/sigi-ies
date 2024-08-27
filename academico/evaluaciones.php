@@ -156,6 +156,7 @@ if (!verificar_sesion($conexion)) {
                                                 <div class="">
                                                     <h2 align="center"><b>Evaluación - <?php echo "Indicador de Logro " . $nro_calificacion . " - " . $r_b_ud['nombre']; ?></b></h2>
                                                     <a href="calificaciones?data=<?php echo base64_encode($id_prog); ?>" class="btn btn-danger">Regresar</a>
+                                                    <a href="imprimir_registro_auxiliar?data=<?php echo base64_encode($id_prog); ?>&data2=<?php echo $_GET['data2']; ?>" class="btn btn-info" target="_blank">Imprimir</a>
                                                     <div class="clearfix"></div>
                                                 </div>
                                                 <div class="x_content">

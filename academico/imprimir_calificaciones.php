@@ -293,8 +293,8 @@ if (!verificar_sesion($conexion)) {
             <td width="33%" valign="top">
                 <table width=100% border="0">
                     <tr >
-                        <td width="50%" colspan="2" height="40px"><img src="../img/logo_minedu.jpeg" alt="" height="30px"></td>
-                        <td width="50%" colspan="2" align="right"><img src="../img/logo.jpeg" alt="" height="30px"></td>
+                        <td width="50%" colspan="2" height="40px"><img src="../images/logo_minedu.jpeg" alt="" height="30px"></td>
+                        <td width="50%" colspan="2" align="right"><img src="../images/logo.png" alt="" height="30px"></td>
                     </tr>
                     <tr>
                         <td width="10%"></td>

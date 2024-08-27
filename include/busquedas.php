@@ -726,3 +726,28 @@ function buscar_favoritos($conexion, $id_usuario){
     $sql = "SELECT * FROM biblioteca_libros_favoritos WHERE id_usuario = '$id_usuario' ORDER BY id DESC";
     return mysqli_query($conexion, $sql);
 }
+
+
+
+
+
+// --------------------------------------------------------- SISTEMA BOLSA ------------------------------------------------------
+function buscar_empresas($conexion){
+    $sql = "SELECT * FROM bolsa_empresa";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_empresas_activas($conexion){
+    $sql = "SELECT * FROM bolsa_empresa WHERE estado = 1";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_empresa($conexion,$id){
+    $sql = "SELECT * FROM bolsa_empresa WHERE id='$id'";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_empresaRuc($conexion,$ruc){
+    $sql = "SELECT * FROM bolsa_empresa WHERE ruc='$ruc'";
+    return mysqli_query($conexion, $sql);
+}
+//-------------------------OFERTAS------------------------------
+
+

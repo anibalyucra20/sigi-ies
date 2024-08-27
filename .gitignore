@@ -1,3 +1,5 @@
 conexion.php
 biblioteca/archivos/**/*
 biblioteca/portadas/**/*
+bolsa/images/**/*
+bolsa/archivos/**/*

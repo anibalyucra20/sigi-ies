@@ -48,36 +48,43 @@ if (!verificar_sesion($conexion)) {
             $salario = $_POST['salario'];
             $ubicacion = $_POST['ubicacion'];
             $tipo_contrato = $_POST['tipo_contrato'];
+            $programa_estudio = $_POST['programa_estudio'];
             $data = base64_encode($empresa);
+            $hoy = date("Y-m-d H:i:s");
 
-            /*$consultaa = "INSERT INTO bolsa_ofertas_laborales (id_empresa, titulo, detalle, requisitos, fecha_cierre,salario,ubicacion,tipo_contrato,foto) VALUES ('$empresa', '$titulo', '$detalle','$fecha_cierre','$salario','$ubicacion','$tipo_contrato','')";
-            $ejec_consulta = mysqli_query($conexion, $consultaa);*/
+            $consultaa = "INSERT INTO bolsa_ofertas_laborales (id_empresa,programa_estudio, titulo, detalle, requisitos,fecha_publicacion, fecha_cierre,salario,ubicacion,tipo_contrato,foto) VALUES ('$empresa', '$programa_estudio', '$titulo', '$detalle', '$requisitos', '$hoy','$fecha_cierre','$salario','$ubicacion','$tipo_contrato','')";
+            $ejec_consulta = mysqli_query($conexion, $consultaa);
 
 
-            //if ($ejec_consulta) {
+            if ($ejec_consulta) {
                 $id = mysqli_insert_id($conexion);
-                if ($_FILES['foto']['name']!='') {
+                if ($_FILES['foto']['name'] != '') {
                     $file_path_foto = $_FILES['archivo']['tmp_name'];
-                    $directorio_foto= "../portadas/";
-                    
+                    $directorio_foto = "../images/";
+
+                    // subir imagen
+                    $resultado = "";
+                    $tipoArchivo = strtolower(pathinfo($_FILES["foto"]["name"], PATHINFO_EXTENSION));
+                    if (move_uploaded_file($_FILES["foto"]["tmp_name"], $directorio_foto . "ofertas_" . $id . "." . $tipoArchivo)) {
+                        $foto = "ofertas_" . $id . "." . $tipoArchivo;
+                        $consulta = "UPDATE bolsa_ofertas_laborales SET foto='$foto' WHERE id='$id'";
+                        mysqli_query($conexion, $consulta);
+                    } else {
+                        $resultado .= ", Error al subir imagen";
+                    }
                 }
-
-                
-
-
-                /*echo "<script>
-			        alert('Se realizó el registro con Éxito ');
-                    window.location= '../ofertas_laborales?".$data."';
-		            </script>   
-		            ";*/
-            /*} else {
                 echo "<script>
-                        alert('Error, No se pudo realizar el registro '".$m.");
+			        alert('Se realizó el registro con Éxito" . $resultado . "');
+                    window.location= '../ofertas_laborales?empresa=" . $data . "';
+		            </script>   
+		            ";
+            } else {
+                echo "<script>
+                        alert('Error, No se pudo realizar el registro ');
                         window.history.back();
                         </script>
                     ";
-                    
-            }*/
+            }
         }
     }
 }

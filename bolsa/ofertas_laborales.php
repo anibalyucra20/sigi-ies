@@ -48,11 +48,11 @@ if (!verificar_sesion($conexion)) {
                 $estado = $_GET['estado'];
                 switch ($estado) {
                     case 'ACTIVO':
-                        $extra .= "WHERE estado ='1' ";
+                        $extra .= "WHERE estado = '1' ";
                         $validar++;
                         break;
                     case 'FINALIZADO':
-                        $extra .= "WHERE estado ='2' ";
+                        $extra .= "WHERE estado = '2' ";
                         $validar++;
                         break;
                     default:
@@ -61,10 +61,10 @@ if (!verificar_sesion($conexion)) {
                 }
             }
             if (isset($_GET['empresa']) && $validar > 0) {
-                $empresa = $_GET['empresa'];
-                $extra .= "AND id_empresa ='" . $empresa . "'";
+                $empresa = base64_decode($_GET['empresa']);
+                $extra .= " AND id_empresa ='" . $empresa . "'";
             } elseif (isset($_GET['empresa']) && $validar == 0) {
-                $extra .= "WHERE id_empresa ='" . $_GET['empresa'] . "'";
+                $extra .= "WHERE id_empresa ='" . base64_decode($_GET['empresa']) . "'";
                 $empresa = $_GET['empresa'];
             }
 ?>
@@ -144,11 +144,11 @@ if (!verificar_sesion($conexion)) {
                                                                         </div>
                                                                         <div class="col-md-12 mb-3">
                                                                             <label>Detalle :</label>
-                                                                            <input type="text" class="form-control" name="detalle" required>
+                                                                            <textarea class="form-control" name="detalle" id="" cols="30" rows="6"></textarea>
                                                                         </div>
                                                                         <div class="col-md-12 mb-3">
                                                                             <label>requisitos :</label>
-                                                                            <input type="number" class="form-control" name="requisitos" required>
+                                                                            <textarea name="requisitos" class="form-control" id="" cols="30" rows="10"></textarea>
                                                                         </div>
                                                                         <div class="col-md-6 mb-3">
                                                                             <label>Fecha de cierre oferta laboral :</label>
@@ -156,7 +156,7 @@ if (!verificar_sesion($conexion)) {
                                                                         </div>
                                                                         <div class="col-md-6 mb-3">
                                                                             <label>Salario :</label>
-                                                                            <input type="number" class="form-control" name="salario" >
+                                                                            <input type="number" class="form-control" name="salario">
                                                                         </div>
                                                                         <div class="col-md-6 mb-3">
                                                                             <label>Ubicación :</label>
@@ -167,7 +167,21 @@ if (!verificar_sesion($conexion)) {
                                                                             <input type="text" class="form-control" name="tipo_contrato">
                                                                         </div>
                                                                         <div class="col-md-12 mb-3">
-                                                                            <label>Foto (opcional):</label>
+                                                                            <label>Programa de Estudios :</label>
+                                                                            <select name="programa_estudio" id="programa_estudio" class="form-control" required>
+                                                                                <option value="">Seleccione</option>
+                                                                                <?php
+                                                                                $b_programas = buscarProgramaEstudio($conexion);
+                                                                                while ($rb_programas = mysqli_fetch_array($b_programas)) {
+                                                                                    ?>
+                                                                                    <option value="<?php echo $rb_programas['id']; ?>"><?php echo $rb_programas['nombre']; ?></option>
+                                                                                    <?php
+                                                                                }
+                                                                                ?>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-12 mb-3">
+                                                                            <label>Imagen (opcional):</label>
                                                                             <input type="file" class="form-control" name="foto">
                                                                         </div>
                                                                     </div>
@@ -197,8 +211,12 @@ if (!verificar_sesion($conexion)) {
                                                             <label>Estado :</label>
                                                             <select class="form-control" name="estado" id="estado_filtro" required>
                                                                 <option value="TODOS">TODOS</option>
-                                                                <option value="ACTIVO">ACTIVO</option>
-                                                                <option value="FINALIZADO">FINALIZADO</option>
+                                                                <option value="ACTIVO" <?php if ($estado == "ACTIVO") {
+                                                                                            echo "selected";
+                                                                                        } ?>>ACTIVO</option>
+                                                                <option value="FINALIZADO" <?php if ($estado == "FINALIZADO") {
+                                                                                                echo "selected";
+                                                                                            } ?>>FINALIZADO</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -208,43 +226,43 @@ if (!verificar_sesion($conexion)) {
                                                     <thead>
                                                         <tr>
                                                             <th>Nro</th>
-                                                            <th>Ruc</th>
                                                             <th>Empresa</th>
-                                                            <th>Dirección</th>
-                                                            <th>Correo</th>
-                                                            <th>Telefono</th>
-                                                            <th>Usuario Responsable</th>
+                                                            <th>Titulo</th>
+                                                            <th>Fecha de publicación</th>
+                                                            <th>Fecha de cierre</th>
+                                                            <th>Salario</th>
+                                                            <th>Ubicación</th>
                                                             <th>Estado</th>
                                                             <th>Acciones</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <?php
-                                                        $b_empresas = buscar_empresas($conexion);
+                                                        $b_ofertas = buscar_ofertas_especial($conexion, $extra);
                                                         $cont = 0;
-                                                        while ($r_b_empresas = mysqli_fetch_array($b_empresas)) {
+                                                        while ($r_b_ofertas = mysqli_fetch_array($b_ofertas)) {
                                                             $cont++;
                                                         ?>
                                                             <tr>
                                                                 <td><?php echo $cont; ?></td>
-                                                                <td><?php echo $r_b_empresas['ruc']; ?></td>
-                                                                <td><?php echo $r_b_empresas['empresa']; ?></td>
-                                                                <td><?php echo $r_b_empresas['direccion']; ?></td>
-                                                                <td><?php echo $r_b_empresas['email']; ?></td>
-                                                                <td><?php echo $r_b_empresas['telefono']; ?></td>
                                                                 <td><?php
-                                                                    $b_usuario = buscarUsuarioById($conexion, $r_b_empresas['id_usuario']);
-                                                                    $r_b_usuario = mysqli_fetch_array($b_usuario);
-                                                                    echo  $r_b_usuario['apellidos_nombres'];
+                                                                    $b_empresa = buscar_empresa($conexion, $r_b_ofertas['id_empresa']);
+                                                                    $r_b_empresa = mysqli_fetch_array($b_empresa);
+                                                                    echo  $r_b_empresa['empresa'];
                                                                     ?>
                                                                 </td>
+                                                                <td><?php echo $r_b_ofertas['titulo']; ?></td>
+                                                                <td><?php echo $r_b_ofertas['fecha_publicacion']; ?></td>
+                                                                <td><?php echo $r_b_ofertas['fecha_cierre']; ?></td>
+                                                                <td><?php echo $r_b_ofertas['salario']; ?></td>
+                                                                <td><?php echo $r_b_ofertas['ubicacion']; ?></td>
                                                                 <td><?php
-                                                                    switch ($r_b_empresas['estado']) {
+                                                                    switch ($r_b_ofertas['estado']) {
                                                                         case 1:
                                                                             echo "Activo";
                                                                             break;
-                                                                        case 0:
-                                                                            echo "Suspendido";
+                                                                        case 2:
+                                                                            echo "Finalizado";
                                                                             break;
                                                                         default:
                                                                             # code...
@@ -343,6 +361,7 @@ if (!verificar_sesion($conexion)) {
                         document.form_filtro.submit();
                     }
                 </script>
+
             </body>
 
             </html>

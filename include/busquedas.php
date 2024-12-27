@@ -750,4 +750,25 @@ function buscar_empresaRuc($conexion,$ruc){
 }
 //-------------------------OFERTAS------------------------------
 
+function buscar_oferta($conexion, $id){
+    $sql = "SELECT * FROM bolsa_ofertas_laborales WHERE id='$id'";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_ofertas($conexion){
+    $sql = "SELECT * FROM bolsa_ofertas_laborales";
+    return mysqli_query($conexion, $sql);
+}
 
+function buscar_ofertas_especial($conexion,$extra){
+    $sql = "SELECT * FROM bolsa_ofertas_laborales ".$extra;
+    return mysqli_query($conexion, $sql);
+}
+
+function buscar_ofertasMasAntigua($conexion, $extra){
+    $sql = "SELECT * FROM bolsa_ofertas_laborales ".$extra." ORDER BY fecha_publicacion ASC LIMIT 1";
+    return mysqli_query($conexion, $sql);
+}
+function buscar_ofertaSalarioMaximo($conexion){
+    $sql = "SELECT * FROM bolsa_ofertas_laborales ORDER BY salario DESC LIMIT 1";
+    return mysqli_query($conexion, $sql);
+}

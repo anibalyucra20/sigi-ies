@@ -177,7 +177,7 @@ if (!verificar_sesion($conexion)) {
                                                             <p><b>Temas Relacionados</b></p>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <p>: <?php echo $r_b_libro['temas_relacionados']; ?></p>
+                                                            <p class="text-justify">: <?php echo $r_b_libro['temas_relacionados']; ?></p>
                                                         </div>
 
                                                     </div>

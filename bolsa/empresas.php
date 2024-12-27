@@ -191,7 +191,7 @@ if (!verificar_sesion($conexion)) {
                                                                 </td>
                                                                 <td>
                                                                     <a href="editar_empresa?data=<?php echo base64_encode($r_b_empresas['id']); ?>" class="btn btn-success">Editar</a>
-                                                                    <a href="ofertas_laborales?empresa=<?php echo base64_encode($r_b_empresas['id']); ?>" class="btn btn-primary">Ver Ofertas</a>
+                                                                    <a href="ofertas_laborales?empresa=<?php echo base64_encode($r_b_empresas['id'])."&estado=ACTIVO"; ?>" class="btn btn-primary">Ver Ofertas</a>
                                                                 </td>
                                                             </tr>
                                                         <?php } ?>

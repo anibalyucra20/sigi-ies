@@ -59,6 +59,7 @@ $rb_datos_iest = mysqli_fetch_array($datos_institucion);
                     if (!is_array($sistemas)) {
                         echo "<center><h1>No Cuenta con Sistemas Habilitados, Comuniquese con el Proveedor</h1></center>";
                     }
+                    echo $_SERVER['HTTP_HOST'];
                     if (in_array("S_SIGI", $sistemas)) {
                     ?>
                         <!-- price element -->
